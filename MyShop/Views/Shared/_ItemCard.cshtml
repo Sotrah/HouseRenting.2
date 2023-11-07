@@ -1,0 +1,21 @@
+﻿@model Item 
+
+<div class="col">
+    <div>
+        <a asp-controller="Item" asp-action="Details" asp-route-id="@Model.ItemId">
+            <img src="@Model.ImageUrl" class="card-img-top" style="height: 40vh; object-fit: cover;" alt="@Model.Name">
+        </a>           
+        <div class="mt-2">
+            <div class="d-flex justify-content-between">
+                <p class="text-start">
+                    <a asp-controller="Item"
+                       asp-action="Details"
+                       asp-route-id="@Model.ItemId">@Model.Name</a>
+                </p>
+                <p class="text-nowrap text">
+                    @Model.Price.ToString("0 NOK per night")
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

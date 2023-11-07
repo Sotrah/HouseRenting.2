@@ -1,0 +1,120 @@
+﻿@using Microsoft.AspNetCore.Identity
+
+@model Item
+@inject UserManager<CustomerUser> UserManager
+
+<div class=" listing-border">
+
+<h3 class="my-2 text">
+    @Model.Name
+</h3>
+
+<div class="row gx-2 justify-content-center">
+    @if (string.IsNullOrEmpty(Model.ImageUrl2) && string.IsNullOrEmpty(Model.ImageUrl3))
+    {
+        <!-- Only one image, so it's centered -->
+        <div class="col-md-12 justify-content-center text image-container">
+            <img alt="@Model.Name" src="@Model.ImageUrl" class="img-fluid single-image" />
+        </div>
+    }
+    else if (string.IsNullOrEmpty(Model.ImageUrl3))
+    {
+        <!-- Two images available, both should be displayed side by side -->
+        <div class="col-md-12 text image-container two-images">
+            <img alt="@Model.Name" src="@Model.ImageUrl" class="img-fluid" />
+            <img alt="@Model.Name" src="@Model.ImageUrl2" class="img-fluid" />
+        </div>
+    }
+    else
+    {
+        <div class="col-md-12 d-flex image-container">
+            <!-- Main image to the left -->
+            <div class="main-image-wrapper">
+                <img alt="@Model.Name" src="@Model.ImageUrl" class="img-fluid main-image" />
+            </div>
+
+            <!-- Additional images on the right -->
+            <div class="additional-images-wrapper">
+                @if (!string.IsNullOrEmpty(Model.ImageUrl2))
+                {
+                    <img alt="@Model.Name" src="@Model.ImageUrl2" class="img-fluid additional-image" />
+                }
+                @if (!string.IsNullOrEmpty(Model.ImageUrl3))
+                {
+                    <img alt="@Model.Name" src="@Model.ImageUrl3" class="img-fluid additional-image" />
+                }
+            </div>
+        </div>
+    }
+
+    <div class="col-12 text-center text my-4">
+        <p>@Model.Description</p>
+    </div>
+
+    <div class="row box-row">
+        <!-- Venstre kolonne for detaljert informasjon -->
+        <div class="col left-text text details">
+            <p>
+                Guests: @Model.Guests <br />
+                Bedrooms: @Model.Rooms<br />
+                Beds: @Model.Beds<br />
+                Baths: @Model.Baths <br /><br />
+                Phone number: @Model.Phone <br />
+                Address: @Model.Address<br />
+                Email: @Model.CustomerUser.Email
+            </p>
+        </div>
+
+        <!-- Høyre kolonne for booking-boksen -->
+        <div class="col d-flex justify-content-end text">
+            <div class="border p-4 box">
+                <h3>@Model.Price.ToString("0 NOK per night")</h3>
+
+                @*   Booking form   *@
+                <form asp-controller="Booking" asp-action="CreateBooking">
+                    @*Flatpickr Date Picker stuff from https://flatpickr.js.org/examples/#range-calendar *@
+                    <div class="form-group text">
+                        <p><input type="text" name="bookingDate" placeholder="Select Date.." id="datePicker" data-date-format="Y-m-d" autocomplete="off" required></p>
+                    </div>
+                    <div class="form-group">
+                        <input type="hidden" name="itemId" value="@Model.ItemId" />
+                    </div>
+                    <button type="submit" class="btn btn-primary">Book Stay</button>
+                </form>
+            </div>
+
+@*Flatpickr Date Picker stuff from https://flatpickr.js.org/examples/#range-calendar *@
+<script>
+    var notFormattedDates = @Html.Raw(Json.Serialize(Model.Bookings));
+
+    // Dummy date, because the calendar doesn't want to accept an empty list
+    var Bookings = ["1999-12-12"];
+
+    // Loop through the notFormattedDates, format them, add to Bookings
+    for (var i = 0; i < notFormattedDates.length; i++) {
+        var date = notFormattedDates[i].bookingDate.split("T")[0];
+        Bookings.push(date);
+    }
+
+    const datePicker = flatpickr("#datePicker", {
+        // Configure options here
+        minDate: "today",
+        dateFormat: "Y-m-d",
+        disable: Bookings,
+
+        // adjustments so you can't submit the form without picking a date
+        allowInput: true,
+        onOpen: function (selectedDates, dateStr, instance) {
+            $(instance.altInput).prop('readonly', true);
+        },
+        onClose: function (selectedDates, dateStr, instance) {
+            $(instance.altInput).prop('readonly', false);
+            $(instance.altInput).blur();
+        }
+    });
+</script>
+
+</div>
+    </div>
+</div>
+</div>
