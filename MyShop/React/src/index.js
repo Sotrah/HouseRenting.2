@@ -1,10 +1,7 @@
 ﻿import React from 'react'
-import ReactDOM from 'react-dom'
+import ReactDOM from 'react-dom/client'
 import App from './App'
+import Test from './Test'
 
-ReactDOM.render(
-    <React.Fragment>
-        <App />
-    </React.Fragment>,
-    document.getElementById('root')
-);
+const root = document.getElementById('root');
+ReactDOM.createRoot(root).render(<App />);
