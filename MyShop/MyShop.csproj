@@ -19,6 +19,8 @@
     <None Remove="Migrations\" />
     <None Remove="Views\Booking\" />
     <None Remove="Views\CustomerUser\" />
+    <None Remove="React\" />
+    <None Remove="React\src\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Models\" />
@@ -32,6 +34,9 @@
     <Folder Include="Migrations\" />
     <Folder Include="Views\Booking\" />
     <Folder Include="Views\CustomerUser\" />
+    <Folder Include="React\" />
+    <Folder Include="React\src\" />
+    <Folder Include="wwwroot\lib\dist\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.9" />
@@ -50,5 +55,8 @@
   <ItemGroup>
     <Compile Remove="Migrations\20230804124308_ItemDb.cs" />
     <Compile Remove="Migrations\20230804124308_ItemDb.Designer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\lib\dist\" />
   </ItemGroup>
 </Project>

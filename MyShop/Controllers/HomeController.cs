@@ -6,10 +6,9 @@ namespace MyShop.Controllers
 {
     public class HomeController : Controller
     {
-        // GET: /<controller>/
-        public IActionResult Index()
+        public ActionResult Index()
         {
-            return RedirectToAction("Grid", "Item"); // Index always redirects to Item Grid
+            return View();
         }
     }
 }

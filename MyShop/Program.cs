@@ -92,7 +92,7 @@ app.MapRazorPages();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Item}/{action=Grid}/{id?}"
+    pattern: "{controller=Home}/{action=Index}"
 );
 
 app.Run();
