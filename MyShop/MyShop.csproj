@@ -32,6 +32,7 @@
 
   <ItemGroup>
     <Folder Include="Models\" />
+    <Folder Include="React\src\components\" />
     <Folder Include="Views\" />
     <Folder Include="Controllers\" />
     <Folder Include="Views\Item\" />
@@ -42,8 +43,6 @@
     <Folder Include="Migrations\" />
     <Folder Include="Views\Booking\" />
     <Folder Include="Views\CustomerUser\" />
-    <Folder Include="React\" />
-    <Folder Include="React\src\" />
     <Folder Include="wwwroot\lib\dist\" />
   </ItemGroup>
   <ItemGroup>
