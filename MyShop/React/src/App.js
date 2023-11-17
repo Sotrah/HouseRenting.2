@@ -1,4 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
+import Navbar from './Navbar'
 
 const App = () => {
     const [posts, setPosts] = useState([]);
@@ -16,6 +17,7 @@ const App = () => {
 
     return (
         <div>
+            <Navbar />
             <h1>Hi there</h1>
             {posts.map((post) => {
                 return (

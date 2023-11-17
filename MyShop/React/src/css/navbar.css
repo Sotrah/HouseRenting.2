@@ -1,0 +1,36 @@
+﻿/* Navbar.css */
+nav {
+    background-color: #333; /* Mørk bakgrunn */
+    color: white;
+    display: flex;
+    justify-content: space-between; /* Fordeler elementer jevnt */
+    padding: 1rem; /* Litt plass rundt elementene */
+}
+
+    nav h1 {
+        margin: 0; /* Fjerner standard margin */
+    }
+
+    nav ul {
+        list-style: none; /* Fjerner listestiler */
+        display: flex; /* Horisontal layout */
+        margin: 0; /* Fjerner standard margin */
+        padding: 0; /* Fjerner standard polstring */
+    }
+
+        nav ul li {
+            margin-right: 20px; /* Avstand mellom hvert element */
+        }
+
+            nav ul li:last-child {
+                margin-right: 0; /* Fjerner margin på siste element */
+            }
+
+    nav a {
+        color: white; /* Hvit tekst */
+        text-decoration: none; /* Fjerner understreking */
+    }
+
+        nav a:hover {
+            text-decoration: underline; /* Understreking ved hover */
+        }
