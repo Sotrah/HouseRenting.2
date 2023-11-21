@@ -18,4 +18,10 @@ public class CustomerUserController : Controller
         List<CustomerUser> customerUsers = await _itemDbContext.CustomerUsers.ToListAsync();
         return View(customerUsers);
     }
+
+    public async Task<ActionResult> GetData()
+    {
+        List<CustomerUser> customerUsers = await _itemDbContext.CustomerUsers.ToListAsync();
+        return Json(customerUsers);
+    }
 }
