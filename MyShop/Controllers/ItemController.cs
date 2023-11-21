@@ -23,6 +23,17 @@ public class ItemController : Controller
         _userManager = userManager;
     }
 
+    public async Task<ActionResult> GetData()
+    {
+        var items = await _itemRepository.GetAll();
+        if (items == null)
+        {
+            _logger.LogError("[ItemController] Item list not found while executing _itemRepository.GetAll()");
+            return NotFound("Item list not found");
+        }
+        return Json(items);
+    }
+
     public async Task<IActionResult> Table()
     {
         var items = await _itemRepository.GetAll();
