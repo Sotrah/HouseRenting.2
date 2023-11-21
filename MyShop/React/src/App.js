@@ -1,31 +1,19 @@
 ﻿import React, { useState, useEffect } from 'react';
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import ControllerTest from "./ControllerTest"
+import Test from "./Test"
 
-const App = () => {
-    const [posts, setPosts] = useState([]);
-    useEffect(() => {
-        fetch('/CustomerUser/GetData')
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                setPosts(data);
-            })
-            .catch((err) => {
-                console.log(err.message);
-            });
-    }, []);
-
+function App() {
     return (
-        <div>
-            <h1>Hi there</h1>
-            {posts.map((post) => {
-                return (
-                    <div className="post-card" key={post.email}>
-                        <p className="post-title">{post.email}</p>
-                    </div>
-                );
-            })}
+        <div className="App">
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<ControllerTest />} />
+                    <Route exact path="/test" element={<Test />} />
+                </Routes>
+            </BrowserRouter>
         </div>
-    );
-};
+    )
+}
 
 export default App;

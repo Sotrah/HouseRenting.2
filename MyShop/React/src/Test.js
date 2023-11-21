@@ -3,7 +3,7 @@
 function Test() {
     return (
         <>
-            <h1>Banan!</h1>
+            <h1>Test page!</h1>
         </>
     );
 }

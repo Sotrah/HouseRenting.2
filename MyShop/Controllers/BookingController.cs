@@ -22,6 +22,12 @@ public class BookingController : Controller
         _logger = logger;
     }
 
+    public async Task<ActionResult> GetData()
+    {
+        List<Booking> bookings = await _itemDbContext.Bookings.ToListAsync();
+        return Json(bookings);
+    }
+
     public async Task<IActionResult> Table()
     {
         List<Booking> bookings = await _itemDbContext.Bookings.ToListAsync();
