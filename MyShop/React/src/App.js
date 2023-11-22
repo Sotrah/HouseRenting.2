@@ -1,27 +1,19 @@
 ﻿import React, { useState, useEffect } from 'react';
-import ItemCard from './components/ItemCard'; // Adjust the path as necessary
-import Layout from './components/Layout';
-import HomePage from './components/HomePage';
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import ControllerTest from "./ControllerTest"
+import Test from "./Test"
 
-const App = () => {
-    const [items, setItems] = useState([]);
-
-    useEffect(() => {
-        // Fetch items from the API
-        fetch('/CustomerUser/GetData') // Adjust the URL to your API endpoint
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                setItems(data);
-            })
-            .catch(err => console.log(err));
-    }, []);
-
+function App() {
     return (
-        <Layout>
-        <HomePage />
-        </Layout>
-    );
-};
+        <div className="App">
+            <BrowserRouter>
+                <Routes>
+                    <Route path="/" element={<ControllerTest />} />
+                    <Route exact path="/test" element={<Test />} />
+                </Routes>
+            </BrowserRouter>
+        </div>
+    )
+}
 
 export default App;
