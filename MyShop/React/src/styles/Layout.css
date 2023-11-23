@@ -11,7 +11,10 @@ a.navbar-brand {
 a {
     color: #0077cc;
 }
-
+.navbar .nav-link {
+    color: #ECEEE5 !important;
+    font-family: 'Oranienbaum', serif !important;
+}
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;
