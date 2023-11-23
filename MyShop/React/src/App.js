@@ -7,6 +7,7 @@ import Layout from "./components/Layout";
 import ItemListView from './components/ItemListViewModel';
 
 import BookingTable from "./pages/BookingTable";
+import CustomerUserTable from "./pages/CustomerUserTable";
 
 function App() {
     return (
@@ -16,6 +17,9 @@ function App() {
                     <Routes>
                         <Route path="/" element={<ControllerTest />} />
                         <Route exact path="/test" element={<Test />} />
+                        <Route path="/BookingTable" element={<BookingTable />} />
+                        <Route path="/CustomerUserTable" element={<CustomerUserTable />} />
+                        </Routes>
                         <Route path="/bookings" element={<BookingTable />} />
                         <Route exact path="/items" element={<ItemListView />} />
                     </Routes>
