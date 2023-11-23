@@ -1,5 +1,6 @@
 ﻿"use strict";
 var path = require("path");
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 var WebpackNotifierPlugin = require("webpack-notifier");
 var BrowserSyncPlugin = require("browser-sync-webpack-plugin");
 
@@ -12,12 +13,12 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.(js|jsx)$/, // Changed to include .jsx files
+                test: /\.(js|jsx)$/,
                 exclude: /node_modules/,
                 use: {
                     loader: "babel-loader",
                     options: {
-                        presets: ['@babel/preset-env', '@babel/preset-react'] // Ensure these presets are installed
+                        presets: ['@babel/preset-env', '@babel/preset-react']
                     }
                 }
             },
@@ -32,7 +33,7 @@ module.exports = {
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'Caching', // Adjust as necessary
+            title: 'Caching'
         }),
         new WebpackNotifierPlugin(),
         new BrowserSyncPlugin()
