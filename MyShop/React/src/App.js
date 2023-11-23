@@ -5,9 +5,10 @@ import ControllerTest from "./ControllerTest"
 import Test from "./Test";
 import Layout from "./components/Layout";
 import ItemListView from './components/ItemListViewModel';
-
 import BookingTable from "./pages/BookingTable";
 import CustomerUserTable from "./pages/CustomerUserTable";
+import './styles/Layout.css';
+
 
 function App() {
     return (
