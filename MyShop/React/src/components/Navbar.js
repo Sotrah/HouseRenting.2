@@ -10,19 +10,19 @@ const Navbar = () => {
                     aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <div className="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                 <div className="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul className="navbar-nav flex-grow-1">
                         <li className="nav-item">
-                            <Link className="nav-link text-light" to="/listings">Listings</Link>
+                            <Link className="nav-link text-light" to="/Test">Test1</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link text-light" to="/edit-listings">Edit Listings</Link>
+                            <Link className="nav-link text-light" to="/Test">Test2</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link text-light" to="/users">Users</Link>
+                            <Link className="nav-link text-light" to="/Test">Users</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link text-light" to="/bookings">Bookings</Link>
+                            <Link className="nav-link text-light" to="/Test">Bookings</Link>
                         </li>
                     </ul>
                     {/* Implement _LoginPartial functionality*/}
