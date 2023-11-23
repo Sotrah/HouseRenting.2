@@ -1,16 +1,11 @@
-﻿/// <binding />
-"use strict";
+﻿"use strict";
 var path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 var WebpackNotifierPlugin = require("webpack-notifier");
 var BrowserSyncPlugin = require("browser-sync-webpack-plugin");
+
 module.exports = {
     entry: ['babel-polyfill', "./React/src/index.js"],
-    plugins: [
-        new HtmlWebpackPlugin({
-            title: 'Caching',
-        }),
-    ],
     output: {
         path: path.resolve(__dirname, "./wwwroot/lib/dist"),
         filename: "bundle.js"
@@ -18,16 +13,32 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.js$/,
+                test: /\.(js|jsx)$/, // Changed to include .jsx files
                 exclude: /node_modules/,
                 use: {
-                    loader: "babel-loader"
+                    loader: "babel-loader",
+                    options: {
+                        presets: ['@babel/preset-env', '@babel/preset-react'] // Ensure these presets are installed
+                    }
                 }
+            },
+            {
+                test: /\.css$/,
+                use: [
+                    'style-loader',
+                    'css-loader'
+                ]
             }
         ]
     },
+    plugins: [
+        new HtmlWebpackPlugin({
+            title: 'Caching', // Adjust as necessary
+        }),
+        new WebpackNotifierPlugin(),
+        new BrowserSyncPlugin()
+    ],
     devtool: "inline-source-map",
-    plugins: [new WebpackNotifierPlugin(), new BrowserSyncPlugin()],
     resolve: {
         extensions: ['.js', '.jsx'],
     }
