@@ -1,5 +1,6 @@
 ﻿import React from 'react';
 import { Link } from 'react-router-dom';
+import '../styles/Layout.css';
 
 const Navbar = () => {
     return (
@@ -16,9 +17,10 @@ const Navbar = () => {
                             <Link className="nav-link text-light" to="/Test">Test1</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link text-light" to="/Test">Test2</Link>
+                            <Link className="nav-link text-light" to="/">Index</Link>
                         </li>
                         <li className="nav-item">
+                            <Link className="nav-link text-light" to="/items">ViewItems</Link>
                             <Link className="nav-link text-light" to="/CustomerUserTable">Users</Link>
                         </li>
                         <li className="nav-item">

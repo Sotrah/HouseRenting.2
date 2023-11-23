@@ -1,8 +1,11 @@
 ﻿import React, { useState, useEffect } from 'react';
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import ControllerTest from "./ControllerTest"
 import Test from "./Test";
 import Layout from "./components/Layout";
+import ItemListView from './components/ItemListViewModel';
+
 import BookingTable from "./pages/BookingTable";
 import CustomerUserTable from "./pages/CustomerUserTable";
 
@@ -17,6 +20,9 @@ function App() {
                         <Route path="/BookingTable" element={<BookingTable />} />
                         <Route path="/CustomerUserTable" element={<CustomerUserTable />} />
                         </Routes>
+                        <Route path="/bookings" element={<BookingTable />} />
+                        <Route exact path="/items" element={<ItemListView />} />
+                    </Routes>
                 </Layout>
             </BrowserRouter>
         </div>
