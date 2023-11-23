@@ -19,8 +19,6 @@ function App() {
                         <Route exact path="/test" element={<Test />} />
                         <Route path="/BookingTable" element={<BookingTable />} />
                         <Route path="/CustomerUserTable" element={<CustomerUserTable />} />
-                        </Routes>
-                        <Route path="/bookings" element={<BookingTable />} />
                         <Route exact path="/items" element={<ItemListView />} />
                     </Routes>
                 </Layout>
