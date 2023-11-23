@@ -1,41 +1,56 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import BookingTable from './BookingTable';
+import { Link } from 'react-router-dom';
+
 
 const BookingPage = () => {
     const [bookings, setBookings] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
-    const [error, setError] = useState('');
-
     useEffect(() => {
-        axios.get('http://localhost:5000/Booking/GetData')
-            .then(response => {
-                setBookings(response.data);
-                setIsLoading(false);
+        fetch('/Booking/GetData')
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                setBookings(data);
             })
-            .catch(error => {
-                console.error("Error fetching bookings", error);
-                setError('Failed to load bookings.');
-                setIsLoading(false);
+            .catch((err) => {
+                console.log(err.message);
             });
     }, []);
 
-    if (isLoading) {
-        return <div>Loading bookings...</div>;
-    }
-
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
-
-    if (bookings.length === 0) {
-        return <div>No bookings available.</div>;
-    }
-
     return (
-        <div className="container">
+        <div>
             <h1>Bookings</h1>
-            <BookingTable bookings={bookings} />
+            {bookings.map((booking) => {
+                return (
+                    <div key={booking.bookingId} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '20px' }}>
+                        <div className="container">
+                            <h5>Booking {booking.bookingId} </h5>
+                            <div>
+                                <table className='table table-striped table-text' style={{ maxWidth: '1200px' }}>
+                                    <thead>
+                                        <tr className="table-header">
+                                            <th> CustomerUser </th>
+                                            <th> Listing </th>
+                                            <th> BookingDate </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>{booking.customerUser.email} </td>
+                                            <td>
+                                                <Link to={`/Item/Detail/${booking.itemId}`} className="link-color">
+                                                {booking.item.name}
+                                                </Link>
+                                            </td>
+                                            <td>{new Date(booking.bookingDate).toLocaleDateString('en-GB')}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                );
+            })}
         </div>
     );
 };
