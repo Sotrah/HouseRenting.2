@@ -22,7 +22,6 @@ public class ItemController : Controller
         _hostEnvironment = hostEnvironment;
         _userManager = userManager;
     }
-    [HttpGet("GetItems")]
     public async Task<ActionResult> GetData()
     {
         var items = await _itemRepository.GetAll();
