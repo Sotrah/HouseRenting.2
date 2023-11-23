@@ -7,7 +7,7 @@ const CustomerUserPage = () => {
 
     useEffect(() => {
         // Erstatt med faktisk API-endepunkt
-        axios.get('http://localhost:5000/CustomerUser/GetData')
+        axios.get('http://localhost:7205/CustomerUser/GetData')
             .then(response => {
                 setCustomerUsers(response.data);
             })

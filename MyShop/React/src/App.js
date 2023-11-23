@@ -4,6 +4,7 @@ import ControllerTest from "./ControllerTest"
 import Test from "./Test";
 import Layout from "./components/Layout";
 import BookingTable from "./pages/BookingTable";
+import CustomerUserTable from "./pages/CustomerUserTable";
 
 function App() {
     return (
@@ -13,7 +14,8 @@ function App() {
                     <Routes>
                         <Route path="/" element={<ControllerTest />} />
                         <Route exact path="/test" element={<Test />} />
-                        <Route path="/bookings" element={<BookingTable />} />
+                        <Route path="/BookingTable" element={<BookingTable />} />
+                        <Route path="/CustomerUserTable" element={<CustomerUserTable />} />
                         </Routes>
                 </Layout>
             </BrowserRouter>
