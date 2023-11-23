@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import '../../wwwroot/lib/bootstrap/css/bootstrap.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import ControllerTest from "./ControllerTest"
 import Test from "./Test";
