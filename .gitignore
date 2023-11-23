@@ -377,3 +377,4 @@ MyShop/ItemDatabase.db-shm
 /MyShop/ItemDatabase.db-shm
 /MyShop/ItemDatabase.db-wal
 MyShop/wwwroot/.DS_Store
+/MyShop/wwwroot/lib/dist/bundle.js
