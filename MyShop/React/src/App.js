@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import ControllerTest from "./ControllerTest"
 import Test from "./Test";
 import Layout from "./components/Layout";
+import BookingTable from "./pages/BookingTable";
 
 function App() {
     return (
@@ -12,6 +13,7 @@ function App() {
                     <Routes>
                         <Route path="/" element={<ControllerTest />} />
                         <Route exact path="/test" element={<Test />} />
+                        <Route path="/bookings" element={<BookingTable />} />
                         </Routes>
                 </Layout>
             </BrowserRouter>
