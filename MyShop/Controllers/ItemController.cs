@@ -33,6 +33,17 @@ public class ItemController : Controller
         return Json(items);
     }
 
+    public async Task<IActionResult> GetItem(int id)
+    {
+        var item = await _itemRepository.GetItemById(id);
+        if (item == null)
+        {
+            _logger.LogError("[ItemController] Item not found for the ItemId {ItemId:0000}", id);
+            return NotFound("Item not found for the ItemId");
+        }
+        return Json(item);
+    }
+
     public async Task<IActionResult> Table()
     {
         var items = await _itemRepository.GetAll();
