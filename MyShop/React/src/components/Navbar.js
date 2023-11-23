@@ -23,7 +23,7 @@ const Navbar = () => {
                             <Link className="nav-link text-light" to="/items">ViewItems</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link text-light" to="/Test">Bookings</Link>
+                            <Link className="nav-link text-light" to="/BookingTable">Bookings</Link>
                         </li>
                     </ul>
                     {/* Implement _LoginPartial functionality*/}
