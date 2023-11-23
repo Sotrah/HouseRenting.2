@@ -6,7 +6,7 @@ const ItemCard = ({ item }) => {
     const detailsUrl = `/item/details/${item.itemId}`;
 
     return (
-        <div className="col">
+        <div className="col-md-4">
             <div>
                 <Link to={detailsUrl}>
                     <img

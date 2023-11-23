@@ -5,17 +5,19 @@ const ItemListView = () => {
     const [items, setItems] = useState([]);
 
     useEffect(() => {
-        fetch('/Item/GetData') // Adjust the endpoint as needed
+        fetch('/Item/GetData')
             .then(response => response.json())
             .then(data => setItems(data))
             .catch(error => console.error('Error fetching items:', error));
     }, []);
 
     return (
-        <div>
-            {items.map(item => (
-                <ItemCard key={item.itemId} item={item} />
-            ))}
+        <div className="container">
+            <div className="row">
+                {items.map(item => (
+                    <ItemCard key={item.itemId} item={item} />
+                ))}
+            </div>
         </div>
     );
 };
