@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 
 
 const CustomerUserPage = () => {
-    const [bookings, setBookings] = useState([]);
+    const [customerUser, setCustomerUsers] = useState([]);
     useEffect(() => {
-        fetch('/Booking/GetData')
+        fetch('/CustomerUser/GetData')
             .then((response) => response.json())
             .then((data) => {
                 console.log(data);
@@ -30,21 +30,21 @@ const CustomerUserPage = () => {
                 </thead>
                 </table>
             </div>
-            {bookings.map((booking) => {
+            {customerUser.map((customerUser) => {
                 return (
-                    <div key={booking.bookingId} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '20px' }}>
+                    <div key={customerUser.userId} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '20px' }}>
                         <div className="container">
                             <div>
                                 <table className='table table-striped table-text' style={{ maxWidth: '1200px' }}>
                                     <tbody>
                                         <tr>
-                                            <td>{booking.customerUser.email} </td>
+                                            <td>{customerUser.email} </td>
                                             <td>
-                                                <Link to={`/Item/Detail/${booking.itemId}`} className="link-color">
-                                                    {booking.item.name}
+                                                <Link to={`/Item/Detail/${customerUser.booking.itemId}`} className="link-color">
+                                                    {customerUser.booking.item.name}
                                                 </Link>
                                             </td>
-                                            <td>{new Date(booking.bookingDate).toLocaleDateString('en-GB')}</td>
+                                            <td>{new Date(customerUser.booking.bookingDate).toLocaleDateString('en-GB')}</td>
                                         </tr>
                                     </tbody>
                                 </table>
