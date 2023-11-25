@@ -1,25 +1,59 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import CustomerUserTable from './CustomerUserTable'; // Anta at dette er en egen komponent
+import { Link } from 'react-router-dom';
+
 
 const CustomerUserPage = () => {
-    const [customerUsers, setCustomerUsers] = useState([]);
-
+    const [bookings, setBookings] = useState([]);
     useEffect(() => {
-        // Erstatt med faktisk API-endepunkt
-        axios.get('http://localhost:7205/CustomerUser/GetData')
-            .then(response => {
-                setCustomerUsers(response.data);
+        fetch('/Booking/GetData')
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                setBookings(data);
             })
-            .catch(error => {
-                console.error("Error fetching customer users", error);
+            .catch((err) => {
+                console.log(err.message);
             });
     }, []);
 
     return (
-        <div className="container">
-            <h1>Customer Users</h1>
-            <CustomerUserTable customerUsers={customerUsers} />
+        <div>
+            <h1>Users</h1>
+            <div className="container">
+            <table className='table table-text' style={{ maxWidth: '1200px' }}>
+                <thead>
+                    <tr className="table-header">
+                        <th> Email </th>
+                        <th> Listing </th>
+                        <th> Booking </th>
+                    </tr>
+                </thead>
+                </table>
+            </div>
+            {bookings.map((booking) => {
+                return (
+                    <div key={booking.bookingId} style={{ border: '1px solid #ccc', padding: '10px', marginBottom: '20px' }}>
+                        <div className="container">
+                            <div>
+                                <table className='table table-striped table-text' style={{ maxWidth: '1200px' }}>
+                                    <tbody>
+                                        <tr>
+                                            <td>{booking.customerUser.email} </td>
+                                            <td>
+                                                <Link to={`/Item/Detail/${booking.itemId}`} className="link-color">
+                                                    {booking.item.name}
+                                                </Link>
+                                            </td>
+                                            <td>{new Date(booking.bookingDate).toLocaleDateString('en-GB')}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                );
+            })}
         </div>
     );
 };
