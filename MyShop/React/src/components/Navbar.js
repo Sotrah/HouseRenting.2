@@ -8,7 +8,9 @@ const Navbar = () => {
         // Apply the custom-navbar class here
         <nav className="navbar navbar-expand-sm navbar-toggleable-sm navbar-light custom-navbar mb-3">
             <div className="container-fluid">
-                <Link className="navbar-brand nav-link" to="/">AirDnD</Link>
+                <div className="d-flex align-items-center">
+                    <Link className="navbar-brand nav-link" to="/">AirDnD</Link>
+                <div className="ms-auto"> 
                 <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                     <span className="navbar-toggler-icon"></span>
@@ -16,13 +18,10 @@ const Navbar = () => {
                 <div className="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul className="navbar-nav flex-grow-1">
                         <li className="nav-item">
-                            <Link className="nav-link" to="/Test">Test1</Link>
+                                    <Link className="nav-link" to="/">Listings</Link>
                         </li>
                         <li className="nav-item">
-                            <Link className="nav-link" to="/">Index</Link>
-                        </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" to="/items">ViewItems</Link>
+                            <Link className="nav-link" to="/">Edit Listings</Link>
                         </li>
                         <li className="nav-item">
                             <Link className="nav-link" to="/CustomerUserTable">Users</Link>
@@ -32,6 +31,8 @@ const Navbar = () => {
                         </li>
                     </ul>
                     {/* Implement _LoginPartial functionality */}
+                </div>
+                </div>
                 </div>
             </div>
         </nav>

@@ -24,8 +24,8 @@ const CustomerUserPage = () => {
                 <thead>
                     <tr className="table-header">
                         <th> Email </th>
-                        <th> Listing </th>
-                        <th> Booking </th>
+                        <th> Listings </th>
+                        <th> Bookings </th>
                     </tr>
                 </thead>
                 </table>
