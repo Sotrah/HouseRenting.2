@@ -17,11 +17,11 @@ function App() {
             <BrowserRouter>
                 <Layout>
                     <Routes>
-                        <Route path="/" element={<ControllerTest />} />
+                        <Route path="/ctest" element={<ControllerTest />} />
                         <Route exact path="/test" element={<Test />} />
                         <Route path="/BookingTable" element={<BookingTable />} />
                         <Route path="/CustomerUserTable" element={<CustomerUserTable />} />
-                        <Route exact path="/items" element={<ItemListView />} />
+                        <Route exact path="/" element={<ItemListView />} />
                     </Routes>
                 </Layout>
             </BrowserRouter>
