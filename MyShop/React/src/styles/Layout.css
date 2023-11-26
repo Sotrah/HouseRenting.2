@@ -14,6 +14,8 @@ a {
 .navbar .nav-link {
     color: #ECEEE5 !important;
     font-family: 'Oranienbaum', serif !important;
+    white-space:nowrap;
+    font-size: 18px;
 }
 .btn-primary {
     color: #fff;
