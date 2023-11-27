@@ -8,10 +8,10 @@ const ItemDisplay = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchItem = async () => {
+        const fetchItemDetails = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`/items/${id}`);
+                const response = await fetch(`/Item/GetItem/${id}`);
                 if (!response.ok) throw new Error('Failed to fetch item.');
                 const data = await response.json();
                 setItem(data);
@@ -22,20 +22,21 @@ const ItemDisplay = () => {
             }
         };
 
-        fetchItem();
+        fetchItemDetails();
     }, [id]);
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
     if (!item) return <div>No item found</div>;
 
-    // Extracted from item for easier access
-    const { imageUrl, imageUrl2, imageUrl3, name, description, guests, rooms, beds, baths, phone, address, customerUserEmail, price } = item;
+    // Extracted from item for easier access (item || is used for when there might be an empty call) 
+    const { imageUrl, imageUrl2, imageUrl3, name, description, guests, rooms, beds, baths, phone, address, customerUserEmail, price } = item || {};
     const hasSecondImage = imageUrl2 && imageUrl2.trim() !== '';
     const hasThirdImage = imageUrl3 && imageUrl3.trim() !== '';
-
+    /*
     // Initialize the flatpickr for the date picker
     React.useEffect(() => {
+        if (!item || !item.bookings) return;
         const bookings = item.bookings.map(booking => booking.bookingDate.split("T")[0]);
         // Dummy date to handle empty bookings
         const dates = bookings.length > 0 ? bookings : ["1999-12-12"];
@@ -53,8 +54,8 @@ const ItemDisplay = () => {
                 instance.altInput.blur();
             }
         });
-    }, [item.bookings]);
-
+    }, [item ? item.bookings : null]);
+    */
     return (
         <div className="listing-border">
             <h3 className="my-2 text">
@@ -111,8 +112,8 @@ const ItemDisplay = () => {
                     <div className="col d-flex justify-content-end text">
                         <div className="border p-4 box">
                             <h3>{price.toFixed(0)} NOK per night</h3>
-
-                            <form /* action and method to be defined as per your API */>
+                            {/* 
+                            <form>
                                 <div className="form-group text">
                                     <p>
                                         <input type="text" name="bookingDate" placeholder="Select Date.." id="datePicker" autoComplete="off" required />
@@ -123,6 +124,7 @@ const ItemDisplay = () => {
                                 </div>
                                 <button type="submit" className="btn btn-primary">Book Stay</button>
                             </form>
+                            */}
                         </div>
                     </div>
                 </div>

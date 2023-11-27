@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 const ItemCard = ({ item }) => {
     const formattedPrice = `${item.price} NOK per night`;
-    const detailsUrl = `/item/details/${item.itemId}`;
+    const detailsUrl = `/item/${item.itemId}`;
 
     return (
         <div className="col-md-4">

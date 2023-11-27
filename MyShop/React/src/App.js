@@ -25,7 +25,7 @@ function App() {
                         <Route path="/CustomerUserTable" element={<CustomerUserTable />} />
                         <Route exact path="/" element={<ItemListView />} />
                         <Route path="/EditListings" element={<EditListings />} />
-                        <Route path="/item/details/:id" element={<ItemDisplay />} />
+                        <Route path="/item/:id" element={<ItemDisplay />} />
                     </Routes>
                 </Layout>
             </BrowserRouter>
