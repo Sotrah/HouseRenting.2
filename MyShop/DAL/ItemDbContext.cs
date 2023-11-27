@@ -1,11 +1,15 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
+using Microsoft.Extensions.Options;
+using Duende.IdentityServer.EntityFramework.Options;
 using MyShop.Models;
 namespace MyShop.DAL;
 
-public class ItemDbContext : IdentityDbContext<CustomerUser>
+public class ItemDbContext : ApiAuthorizationDbContext<CustomerUser>
 {
-    public ItemDbContext(DbContextOptions<ItemDbContext> options) : base(options)
+    public ItemDbContext(DbContextOptions options, IOptions<OperationalStoreOptions> operationalStoreOptions)
+        : base(options, operationalStoreOptions)
     {
         //Database.EnsureCreated();
     }
