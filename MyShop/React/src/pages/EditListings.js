@@ -18,7 +18,7 @@ const EditListings = () => {
 
     return (
         <div>
-            <h1>Users</h1>
+            <h1>Edit Listings</h1>
             <div className="container">
                 <table className='table table-striped table-text' style={{ maxWidth: '1200px' }}>
                     <thead>
@@ -50,7 +50,7 @@ const EditListings = () => {
                         ))}
                     </tbody>
                 </table>
-                <button className="btn btn-primary" style={{marginTop: '20px' }}>Create</button>
+                <button className="btn btn-primary" style={{marginTop: '20px' }}>Create New Listing</button>
             </div>
         </div>
     );
