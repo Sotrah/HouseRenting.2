@@ -1,8 +1,38 @@
-﻿import React from 'react';
+﻿import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
-const ItemDisplay = ({ item }) => {
-    const hasSecondImage = item.imageUrl2 && item.imageUrl2.trim() !== '';
-    const hasThirdImage = item.imageUrl3 && item.imageUrl3.trim() !== '';
+const ItemDisplay = () => {
+    const { id } = useParams();
+    const [item, setItem] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        const fetchItem = async () => {
+            setLoading(true);
+            try {
+                const response = await fetch(`/api/items/${id}`);
+                if (!response.ok) throw new Error('Failed to fetch item.');
+                const data = await response.json();
+                setItem(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchItem();
+    }, [id]);
+
+    if (loading) return <div>Loading...</div>;
+    if (error) return <div>Error: {error}</div>;
+    if (!item) return <div>No item found</div>;
+
+    // Extracted from item for easier access
+    const { imageUrl, imageUrl2, imageUrl3, name, description, guests, rooms, beds, baths, phone, address, customerUserEmail, price } = item;
+    const hasSecondImage = imageUrl2 && imageUrl2.trim() !== '';
+    const hasThirdImage = imageUrl3 && imageUrl3.trim() !== '';
 
     // Initialize the flatpickr for the date picker
     React.useEffect(() => {
@@ -28,67 +58,60 @@ const ItemDisplay = ({ item }) => {
     return (
         <div className="listing-border">
             <h3 className="my-2 text">
-                {item.name}
+                {name}
             </h3>
 
             <div className="row gx-2 justify-content-center">
                 {!hasSecondImage && !hasThirdImage && (
-                    // Only one image, so it's centered
                     <div className="col-md-12 justify-content-center text image-container">
-                        <img alt={item.name} src={item.imageUrl} className="img-fluid single-image" />
+                        <img alt={name} src={imageUrl} className="img-fluid single-image" />
                     </div>
                 )}
 
                 {hasSecondImage && !hasThirdImage && (
-                    // Two images available, both should be displayed side by side
                     <div className="col-md-12 text image-container two-images">
-                        <img alt={item.name} src={item.imageUrl} className="img-fluid" />
-                        <img alt={item.name} src={item.imageUrl2} className="img-fluid" />
+                        <img alt={name} src={imageUrl} className="img-fluid" />
+                        <img alt={name} src={imageUrl2} className="img-fluid" />
                     </div>
                 )}
 
                 {hasThirdImage && (
                     <div className="col-md-12 d-flex image-container">
-                        // Main image to the left
                         <div className="main-image-wrapper">
-                            <img alt={item.name} src={item.imageUrl} className="img-fluid main-image" />
+                            <img alt={name} src={imageUrl} className="img-fluid main-image" />
                         </div>
 
-                        // Additional images on the right
                         <div className="additional-images-wrapper">
                             {hasSecondImage && (
-                                <img alt={item.name} src={item.imageUrl2} className="img-fluid additional-image" />
+                                <img alt={name} src={imageUrl2} className="img-fluid additional-image" />
                             )}
                             {hasThirdImage && (
-                                <img alt={item.name} src={item.imageUrl3} className="img-fluid additional-image" />
+                                <img alt={name} src={imageUrl3} className="img-fluid additional-image" />
                             )}
                         </div>
                     </div>
                 )}
                 <div className="col-12 text-center text my-4">
-                    <p>{item.description}</p>
+                    <p>{description}</p>
                 </div>
 
                 <div className="row box-row">
-                    {/* Left column for detailed information */}
                     <div className="col left-text text details">
                         <p>
-                            Guests: {item.guests} <br />
-                            Bedrooms: {item.rooms}<br />
-                            Beds: {item.beds}<br />
-                            Baths: {item.baths} <br /><br />
-                            Phone number: {item.phone} <br />
-                            Address: {item.address}<br />
-                            Email: {item.customerUserEmail}
+                            Guests: {guests} <br />
+                            Bedrooms: {rooms}<br />
+                            Beds: {beds}<br />
+                            Baths: {baths} <br /><br />
+                            Phone number: {phone} <br />
+                            Address: {address}<br />
+                            Email: {customerUserEmail}
                         </p>
                     </div>
 
-                    {/* Right column for booking box */}
                     <div className="col d-flex justify-content-end text">
                         <div className="border p-4 box">
-                            <h3>{item.price.toFixed(0)} NOK per night</h3>
+                            <h3>{price.toFixed(0)} NOK per night</h3>
 
-                            {/* Booking form */}
                             <form /* action and method to be defined as per your API */>
                                 <div className="form-group text">
                                     <p>
@@ -96,7 +119,7 @@ const ItemDisplay = ({ item }) => {
                                     </p>
                                 </div>
                                 <div className="form-group">
-                                    <input type="hidden" name="itemId" value={item.itemId} />
+                                    <input type="hidden" name="itemId" value={itemId} />
                                 </div>
                                 <button type="submit" className="btn btn-primary">Book Stay</button>
                             </form>
@@ -107,5 +130,4 @@ const ItemDisplay = ({ item }) => {
         </div>
     );
 };
-
 export default ItemDisplay;

@@ -10,6 +10,7 @@ import BookingTable from "./pages/BookingTable";
 import CustomerUserTable from "./pages/CustomerUserTable";
 import './styles/Layout.css';
 import EditListings from './pages/EditListings';
+import ItemDisplay from './pages/Details';
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
                         <Route path="/CustomerUserTable" element={<CustomerUserTable />} />
                         <Route exact path="/" element={<ItemListView />} />
                         <Route path="/EditListings" element={<EditListings />} />
+                        <Route path="/item/details/:id" element={<ItemDisplay />} />
                     </Routes>
                 </Layout>
             </BrowserRouter>
