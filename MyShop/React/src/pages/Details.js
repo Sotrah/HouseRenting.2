@@ -11,7 +11,7 @@ const ItemDisplay = () => {
         const fetchItem = async () => {
             setLoading(true);
             try {
-                const response = await fetch(`/api/items/${id}`);
+                const response = await fetch(`/items/${id}`);
                 if (!response.ok) throw new Error('Failed to fetch item.');
                 const data = await response.json();
                 setItem(data);
