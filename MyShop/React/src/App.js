@@ -9,6 +9,7 @@ import ItemListView from './components/ItemListViewModel';
 import BookingTable from "./pages/BookingTable";
 import CustomerUserTable from "./pages/CustomerUserTable";
 import './styles/Layout.css';
+import EditListings from './pages/EditListings';
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
                         <Route path="/BookingTable" element={<BookingTable />} />
                         <Route path="/CustomerUserTable" element={<CustomerUserTable />} />
                         <Route exact path="/" element={<ItemListView />} />
+                        <Route path="/EditListings" element={<EditListings />} />
                     </Routes>
                 </Layout>
             </BrowserRouter>
