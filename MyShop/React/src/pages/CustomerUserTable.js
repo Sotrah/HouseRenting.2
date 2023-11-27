@@ -20,7 +20,7 @@ const CustomerUserPage = () => {
         <div>
             <h1>Users</h1>
             <div className="container">
-            <table className='table table-text' style={{ maxWidth: '1200px' }}>
+            <table className='table table-striped table-text' style={{ maxWidth: '1200px' }}>
                 <thead>
                     <tr className="table-header">
                         <th> Email </th>
@@ -28,26 +28,17 @@ const CustomerUserPage = () => {
                         <th> Bookings </th>
                     </tr>
                 </thead>
-                </table>
+            <tbody>
+            {customerUser.map((customerUser) => (
+                    <tr key={customerUser.email} >
+                        <td>{customerUser.email} </td>
+                        <td>{customerUser.email} </td>
+                        <td>{customerUser.email} </td>
+                    </tr>
+            ))}
+            </tbody>
+            </table>
             </div>
-            {customerUser.map((customerUser) => {
-                return (
-                    <div key={customerUser.email} >
-                        <div className="container">
-                            <div>
-                                <table className='table table-striped table-text' style={{ maxWidth: '1200px' }}>
-                                    <tbody>
-                                        <tr>
-                                            <td>{customerUser.email} </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-
-                );
-            })}
         </div>
     );
 };
