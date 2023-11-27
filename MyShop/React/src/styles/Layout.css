@@ -1,6 +1,14 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+.custom-navbar {
+    background-color: #7D8C5F !important;
+}
+
+.navbar-light .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'%3e%3c/path%3e%3c/svg%3e");
+}
+
 a.navbar-brand {
     white-space: normal;
     text-align: center;
@@ -9,7 +17,8 @@ a.navbar-brand {
 }
 
 a {
-    color: #0077cc;
+    color: #7D8C5F !important;
+    font-family: 'Oranienbaum', serif !important;
 }
 .navbar .nav-link {
     color: #ECEEE5 !important;
@@ -17,16 +26,10 @@ a {
     white-space:nowrap;
     font-size: 18px;
 }
-.btn-primary {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
-}
+
 
 .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-    color: #fff;
-    background-color: #1b6ec2;
-    border-color: #1861ac;
+    background-color: #e9eaeb !important;
 }
 
 .border-top {
@@ -41,18 +44,147 @@ a {
     box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
 }
 
-button.accept-policy {
-    font-size: 1rem;
-    line-height: inherit;
+
+.box {
+    background-color: #ECEEE5;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
+
+.details {
+    border-radius: 10px;
+}
+
+.box-row {
+    max-width: 950px;
+    margin: 0 auto;
+}
+
+.listing-border {
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 20px;
+}
+
+.text {
+    font-family: 'Oranienbaum', serif;
+}
+
+.table-text {
+    font-family: 'Oranienbaum', serif, bold;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Oranienbaum', serif;
+}
+
+
 
 .container-fluid {
     width: 100%;
     max-width: 100%;
 }
 
-.footer {
-    width: 100%;
-    white-space: nowrap;
+.btn-primary {
+    background-color: #7D8C5F;
+    border-color: #6B7A50;
+    font-family: 'Oranienbaum', serif;
+}
 
+    .btn-primary:hover {
+        background-color: #6B7A50;
+        border-color: #596842;
+    }
+
+    .btn-primary:active {
+        background-color: #596842;
+        border-color: #475631
+    }
+
+button.accept-policy {
+    font-size: 1rem;
+    line-height: inherit;
+}
+
+.my-custom-image {
+    width: 100%;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.image-container {
+    max-height: 500px;
+    width: 100%;
+    display: flex;
+    gap: 5px;
+}
+
+.single-image {
+    max-width: 50vw;
+    object-fit: contain;
+    max-height: 100%;
+}
+
+.two-images {
+    max-height: 500px;
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+}
+
+    .two-images img {
+        width: 50%;
+        max-height: 100%;
+        object-fit: cover;
+    }
+
+.main-image-wrapper, .additional-images-wrapper {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.main-image {
+    width: 100%;
+    object-fit: cover;
+}
+
+.additional-images-wrapper {
+    flex-direction: column;
+    flex: 1;
+    gap: 5px;
+}
+
+.additional-image {
+    width: 100%;
+    object-fit: cover;
+    max-height: 50%;
+}
+
+body, html {
+    height: 100%;
+    margin: 0;
+}
+
+.container {
+    min-height: calc(100% - 60px - 40px);
+    padding-bottom: 20px;
+}
+
+.footer {
+    background-color: #ECEEE5;
+    text-align: left;
+    padding: 20px 0;
+    padding-left: 20px;
+    margin-top: 200px;
+    position: relative;
+    width: 100%;
+    bottom: 0;
+    height: 60px;
+    color: #6B7A50;
+    clear: both;
 }
