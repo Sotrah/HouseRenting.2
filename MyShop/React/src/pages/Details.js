@@ -1,5 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+//import Flatpickr from "react-flatpickr";
 
 const ItemDisplay = () => {
     const { id } = useParams();
@@ -33,29 +34,33 @@ const ItemDisplay = () => {
     const { imageUrl, imageUrl2, imageUrl3, name, description, guests, rooms, beds, baths, phone, address, customerUserEmail, price } = item || {};
     const hasSecondImage = imageUrl2 && imageUrl2.trim() !== '';
     const hasThirdImage = imageUrl3 && imageUrl3.trim() !== '';
-    /*
+    
     // Initialize the flatpickr for the date picker
     React.useEffect(() => {
         if (!item || !item.bookings) return;
+
+        // Process bookings data outside of the dynamic import
         const bookings = item.bookings.map(booking => booking.bookingDate.split("T")[0]);
-        // Dummy date to handle empty bookings
         const dates = bookings.length > 0 ? bookings : ["1999-12-12"];
 
-        flatpickr("#datePicker", {
-            minDate: "today",
-            dateFormat: "Y-m-d",
-            disable: dates,
-            allowInput: true,
-            onOpen: function (selectedDates, dateStr, instance) {
-                instance.altInput.readOnly = true;
-            },
-            onClose: function (selectedDates, dateStr, instance) {
-                instance.altInput.readOnly = false;
-                instance.altInput.blur();
-            }
+        // Dynamic import of flatpickr
+        import('flatpickr').then(flatpickr => {
+            flatpickr("#datePicker", {
+                minDate: "today",
+                dateFormat: "Y-m-d",
+                disable: dates,
+                allowInput: true,
+                onOpen: function (selectedDates, dateStr, instance) {
+                    instance.altInput.readOnly = true;
+                },
+                onClose: function (selectedDates, dateStr, instance) {
+                    instance.altInput.readOnly = false;
+                    instance.altInput.blur();
+                }
+            });
         });
-    }, [item ? item.bookings : null]);
-    */
+    }, [item]);
+   
     return (
         <div className="listing-border">
             <h3 className="my-2 text">
@@ -108,11 +113,11 @@ const ItemDisplay = () => {
                             Email: {customerUserEmail}
                         </p>
                     </div>
-
+                   
                     <div className="col d-flex justify-content-end text">
                         <div className="border p-4 box">
                             <h3>{price.toFixed(0)} NOK per night</h3>
-                            {/* 
+                            
                             <form>
                                 <div className="form-group text">
                                     <p>
@@ -120,11 +125,11 @@ const ItemDisplay = () => {
                                     </p>
                                 </div>
                                 <div className="form-group">
-                                    <input type="hidden" name="itemId" value={itemId} />
+                                    <input type="hidden" name="itemId" value={item ? item.itemId : ''} />
                                 </div>
                                 <button type="submit" className="btn btn-primary">Book Stay</button>
                             </form>
-                            */}
+                            
                         </div>
                     </div>
                 </div>

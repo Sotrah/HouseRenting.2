@@ -37,7 +37,7 @@ const BookingPage = () => {
                                         <tr>
                                             <td>{booking.customerUser.email} </td>
                                             <td>
-                                                <Link to={`/Item/Detail/${booking.itemId}`} className="link-color">
+                                                <Link to={`/Item/GetItem/${booking.itemId}`} className="link-color">
                                                 {booking.item.name}
                                                 </Link>
                                             </td>
