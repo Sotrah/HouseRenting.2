@@ -31,7 +31,7 @@ const Navbar = () => {
                         </li>
                             </ul>
                             <div className="d-flex">
-                                <Link className="nav-link" to="/">Login</Link>
+                                <Link className="nav-link" to="/Create">Create new listing</Link>
 
                             </div>
                     {/* Implement _LoginPartial functionality */}

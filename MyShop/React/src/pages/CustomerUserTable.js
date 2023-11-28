@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import BookingPage from './BookingTable';
 
 
 const CustomerUserPage = () => {
@@ -32,8 +33,8 @@ const CustomerUserPage = () => {
             {customerUser.map((customerUser) => (
                     <tr key={customerUser.email} >
                         <td>{customerUser.email} </td>
-                        <td>{customerUser.email} </td>
-                        <td>{customerUser.email} </td>
+                        <td>{customerUser.item} </td>
+                        <td>{new Date(customerUser.bookingDate).toLocaleDateString('en-GB')}</td>
                     </tr>
             ))}
             </tbody>
