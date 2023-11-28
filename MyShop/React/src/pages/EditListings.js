@@ -44,13 +44,17 @@ const EditListings = () => {
                                 <td>{item.phone}</td>
                                 <td>{item.rooms}</td>
                                 <td>{item.beds}</td>
-                                <td>{item.itemId}</td>
-                                <td>{item.itemId}</td>
+                                <td>{item.customerUser.email}</td>
+                                <td>
+                                    <Link to={`/update/${item.itemId}`} className="link-color">Update</Link>
+                                    {' '}
+                                    <Link to={`/delete/${item.itemId}`} className="link-color">Delete</Link>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-                <button className="btn btn-primary" style={{marginTop: '20px' }}>Create New Listing</button>
+                <Link to="/create" className="btn btn-primary text-light" >Create New Listing</Link>
             </div>
         </div>
     );
