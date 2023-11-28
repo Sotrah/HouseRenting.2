@@ -24,4 +24,9 @@ public class CustomerUserController : Controller
         List<CustomerUser> customerUsers = await _itemDbContext.CustomerUsers.ToListAsync();
         return Json(customerUsers);
     }
+    public async Task<ActionResult> GetUser()
+    {
+        CustomerUser loggedInUser = await _itemDbContext.CustomerUsers.FindAsync("5124afd8-451c-49fc-a15a-ab784ece9256");
+        return Json(loggedInUser);
+    }
 }

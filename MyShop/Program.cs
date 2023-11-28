@@ -26,40 +26,10 @@ builder.Services.AddDbContext<ItemDbContext>(options =>
 builder.Services.AddDefaultIdentity<CustomerUser>()
     .AddEntityFrameworkStores<ItemDbContext>();
 
-//builder.Services.AddIdentity<CustomerUser, IdentityRole>(options =>
-//{
-//    // Password settings
-//    options.Password.RequireDigit = true;
-//    options.Password.RequiredLength = 8;
-//    options.Password.RequireNonAlphanumeric = true;
-//    options.Password.RequireUppercase = true;
-//    options.Password.RequireLowercase = true;
-//    options.Password.RequiredUniqueChars = 6;
-
-//    // Lockout settings
-//    options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(60);
-//    options.Lockout.MaxFailedAccessAttempts = 5;
-//    options.Lockout.AllowedForNewUsers = true;
-
-//    // User settings
-//    options.User.RequireUniqueEmail = true;
-//})
-//.AddEntityFrameworkStores<ItemDbContext>()
-//.AddDefaultTokenProviders();
-
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
 
 builder.Services.AddRazorPages(); // order of adding services does not matter
 builder.Services.AddSession();
-
-//builder.Services.AddDistributedMemoryCache();
-
-//builder.Services.AddSession(options =>
-//{
-//    options.Cookie.Name = ".AdventureWorks.Session";
-//    options.IdleTimeout = TimeSpan.FromSeconds(1800); // 30 minutes
-//    options.Cookie.IsEssential = true;
-//});
 
 var loggerConfiguration = new LoggerConfiguration()
     .MinimumLevel.Information() // levels: Trace< Information < Warning < Erorr < Fatal
@@ -84,6 +54,7 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
     DBInit.Seed(app);
 }
+DBInit.Seed(app);
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -94,9 +65,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.UseAuthentication();
-
-// app.MapDefaultControllerRoute();
-// changed to load the item grid instead of index
 
 app.MapRazorPages();
 

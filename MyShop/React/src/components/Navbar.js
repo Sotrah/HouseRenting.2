@@ -1,9 +1,23 @@
-﻿import React from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import '../../../wwwroot/lib/bootstrap/css/custom.css';
 import '../styles/Layout.css'; // Ensure this import is correct
 
 const Navbar = () => {
+
+    const [loggedInUser, setLoggedInUser] = useState([]);
+    useEffect(() => {
+        fetch('/CustomerUser/GetUser')
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+                setLoggedInUser(data);
+            })
+            .catch((err) => {
+                console.log(err.message);
+            });
+    }, []);
+
     return (
         // Apply the custom-navbar class here
         <nav className="navbar navbar-expand-sm navbar-toggleable-sm navbar-light custom-navbar mb-3">
@@ -18,7 +32,7 @@ const Navbar = () => {
                 <div className="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul className="navbar-nav flex-grow-1">
                         <li className="nav-item">
-                                    <Link className="nav-link" to="/">Listings</Link>
+                            <Link className="nav-link" to="/">Listings</Link>
                         </li>
                         <li className="nav-item">
                             <Link className="nav-link" to="/EditListings">Edit Listings</Link>
@@ -29,12 +43,15 @@ const Navbar = () => {
                         <li className="nav-item">
                             <Link className="nav-link" to="/BookingTable">Bookings</Link>
                         </li>
-                            </ul>
-                            <div className="d-flex">
-                                <Link className="nav-link" to="/">Login</Link>
-
-                            </div>
-                    {/* Implement _LoginPartial functionality */}
+                    </ul>
+                    <ul className="navbar-nav">
+                        <li className="nav-item">
+                            <Link className="nav-link" to="/Create">Create New Listing</Link>
+                        </li>
+                        <li className="nav-item">
+                            <Link className="nav-link" >Hello {loggedInUser.email}</Link>
+                        </li>
+                    </ul>
                 </div>
                 </div>
                 </div>
