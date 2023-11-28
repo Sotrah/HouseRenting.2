@@ -5,16 +5,32 @@ const EditListings = () => {
     const [items, setItems] = useState([]);
 
     useEffect(() => {
-        fetch('/Item/GetData')
-            .then((response) => response.json())
-            .then((data) => {
-                console.log(data);
-                setItems(data);
-            })
-            .catch((err) => {
-                console.log(err.message);
-            });
+        fetchItems();
     }, []);
+
+    const fetchItems = async () => {
+        try {
+            const response = await fetch('/Item/GetData');
+            const data = await response.json();
+            setItems(data);
+        } catch (err) {
+            console.log(err.message);
+        }
+    };
+
+    const deleteItem = async (itemId) => {
+        if (window.confirm('Are you sure you want to delete this item?')) {
+            try {
+                const response = await fetch(`/Item/DeleteConfirmed/${itemId}`, { method: 'POST' });
+                if (!response.ok) {
+                    throw new Error('Item deletion failed');
+                }
+                fetchItems(); // Re-fetch items to update the list
+            } catch (err) {
+                console.error(err.message);
+            }
+        }
+    };
 
     return (
         <div>
@@ -48,7 +64,7 @@ const EditListings = () => {
                                 <td>
                                     <Link to={`/update/${item.itemId}`} className="link-color">Update</Link>
                                     {' '}
-                                    <Link to={`/delete/${item.itemId}`} className="link-color">Delete</Link>
+                                    <button onClick={() => deleteItem(item.itemId)} className="link-color">Delete</button>
                                 </td>
                             </tr>
                         ))}
