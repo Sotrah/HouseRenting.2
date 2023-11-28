@@ -1,6 +1,6 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-//import Flatpickr from "react-flatpickr";
+import Flatpickr from "react-flatpickr";
 
 const ItemDisplay = () => {
     const { id } = useParams();
@@ -26,6 +26,39 @@ const ItemDisplay = () => {
         fetchItemDetails();
     }, [id]);
 
+    // Initialize the flatpickr for the date picker
+    useEffect(() => {
+        if (!item || !item.bookings) return;
+
+        // Process bookings data outside of the dynamic import
+        const bookings = item.bookings.map(booking => booking.bookingDate.split("T")[0]);
+        const dates = bookings.length > 0 ? bookings : ["1999-12-12"];
+
+        // Dynamic import of flatpickr
+        import('flatpickr').then(({ default: flatpickr }) => {
+            flatpickr("#datePicker", {
+                minDate: "today",
+                dateFormat: "Y-m-d",
+                disable: dates,
+                allowInput: true,
+                onOpen: function (selectedDates, dateStr, instance) {
+                    // Check if altInput is available before setting readOnly
+                    if (instance.altInput) {
+                        instance.altInput.readOnly = true;
+                    }
+                },
+                onClose: function (selectedDates, dateStr, instance) {
+                    // Check if altInput is available before setting readOnly
+                    if (instance.altInput) {
+                        instance.altInput.readOnly = false;
+                        instance.altInput.blur();
+                    }
+                }
+            });
+        });
+
+    }, [item]);
+
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
     if (!item) return <div>No item found</div>;
@@ -34,32 +67,7 @@ const ItemDisplay = () => {
     const { imageUrl, imageUrl2, imageUrl3, name, description, guests, rooms, beds, baths, phone, address, customerUserEmail, price } = item || {};
     const hasSecondImage = imageUrl2 && imageUrl2.trim() !== '';
     const hasThirdImage = imageUrl3 && imageUrl3.trim() !== '';
-    
-    // Initialize the flatpickr for the date picker
-    React.useEffect(() => {
-        if (!item || !item.bookings) return;
 
-        // Process bookings data outside of the dynamic import
-        const bookings = item.bookings.map(booking => booking.bookingDate.split("T")[0]);
-        const dates = bookings.length > 0 ? bookings : ["1999-12-12"];
-
-        // Dynamic import of flatpickr
-        import('flatpickr').then(flatpickr => {
-            flatpickr("#datePicker", {
-                minDate: "today",
-                dateFormat: "Y-m-d",
-                disable: dates,
-                allowInput: true,
-                onOpen: function (selectedDates, dateStr, instance) {
-                    instance.altInput.readOnly = true;
-                },
-                onClose: function (selectedDates, dateStr, instance) {
-                    instance.altInput.readOnly = false;
-                    instance.altInput.blur();
-                }
-            });
-        });
-    }, [item]);
    
     return (
         <div className="listing-border">
