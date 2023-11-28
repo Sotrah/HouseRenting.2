@@ -107,6 +107,11 @@ button.accept-policy {
     line-height: inherit;
 }
 
+a.btn.btn-primary {
+    color: white;
+    text-decoration: none;
+}
+
 .my-custom-image {
     width: 100%;
     border-radius: 5px;

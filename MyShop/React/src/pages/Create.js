@@ -127,7 +127,7 @@ return (
                 <label htmlFor="ImageUpload3">Image 3</label>
                 <input type="file" name="ImageUpload3" onChange={handleFileChange} />
             </div>
-                <button className="btn btn-primary" style={{ marginTop: '20px' }}>Submit</button>
+            <button type="submit" className="btn btn-primary">Create</button>
         </form>
     </div>
 );
