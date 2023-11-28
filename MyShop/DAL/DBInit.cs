@@ -8,7 +8,7 @@ public static class DBInit
     {
         using var serviceScope = app.ApplicationServices.CreateScope();
         ItemDbContext context = serviceScope.ServiceProvider.GetRequiredService<ItemDbContext>();
-       // context.Database.EnsureDeleted();
+        //context.Database.EnsureDeleted();
         context.Database.EnsureCreated();
 
         if (!context.CustomerUsers.Any())
@@ -17,6 +17,7 @@ public static class DBInit
             {
                 new CustomerUser { Email = "AliceHansen@test1.test", PasswordHash = "1234"},
                 new CustomerUser { Email = "BobJohansen@test2.test", PasswordHash = "2345"},
+                new CustomerUser { Email = "DemoUser@Airdnd.com", PasswordHash = "2345"},
             };
             context.AddRange(customers);
             context.SaveChanges();
