@@ -12,6 +12,7 @@ import './styles/Layout.css';
 import EditListings from './pages/EditListings';
 import ItemDisplay from './pages/Details';
 import Create from './pages/Create';
+import UpdateListing from './pages/Update';
 
 
 function App() {
@@ -28,6 +29,7 @@ function App() {
                         <Route path="/EditListings" element={<EditListings />} />
                         <Route path="/item/:id" element={<ItemDisplay />} />
                         <Route path="/Create" element={<Create />} />
+                        <Route path="/update/:id" element={<UpdateListing />} />
                     </Routes>
                 </Layout>
             </BrowserRouter>

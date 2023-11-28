@@ -46,6 +46,11 @@ const EditListings = () => {
                                 <td>{item.beds}</td>
                                 <td>{item.itemId}</td>
                                 <td>{item.itemId}</td>
+                                <td>
+                                    <Link to={`/update/${item.itemId}`} className="btn btn-primary" style={{ marginTop: '20px' }}>
+                                        Update
+                                    </Link>
+                                </td>
                             </tr>
                         ))}
                     </tbody>
