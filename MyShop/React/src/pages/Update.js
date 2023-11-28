@@ -1,6 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import Layout from '../components/Layout';
 const UpdateListing = () => {
     const [item, setItem] = useState({
         // Initialize the state with all the fields you need
@@ -14,7 +13,6 @@ const UpdateListing = () => {
         beds: '',
         guests: '',
         baths: '',
-        // Assuming you're not initially displaying images
     });
     const { itemId } = useParams(); // Get the item ID from the URL
     const navigate = useNavigate();
@@ -23,7 +21,13 @@ const UpdateListing = () => {
         // Fetch the item details using itemId and set it in state
         fetch(`/Item/GetItem/${itemId}`)
             .then(response => response.json())
-            .then(data => setItem(data))
+            .then(data => {
+                if (data) {
+                    setItem(data);
+                } else {
+                    console.error('Item not found');
+                }
+            })
             .catch(error => console.error('Unable to get item:', error));
     }, [itemId]);
 
