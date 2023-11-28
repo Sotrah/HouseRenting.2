@@ -48,9 +48,11 @@ const Navbar = () => {
                         <li className="nav-item">
                             <Link className="nav-link" to="/Create">Create New Listing</Link>
                         </li>
-                        <li className="nav-item">
-                            <Link className="nav-link" >Hello {loggedInUser.email}</Link>
-                        </li>
+                                <li className="nav-item">
+                                    {loggedInUser && loggedInUser.email && (
+                                        <Link className="nav-link">Hello {loggedInUser.email}</Link>
+                                    )}
+                                </li>
                     </ul>
                 </div>
                 </div>
