@@ -31,7 +31,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\" />
     <Folder Include="Controllers\" />
     <Folder Include="Views\Item\" />
     <Folder Include="Views\Shared\" />

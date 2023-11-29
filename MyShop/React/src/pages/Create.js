@@ -33,14 +33,22 @@ const CreateItem = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const formData = new FormData();
-        Object.keys(itemFields).forEach(key => formData.append(key, itemFields[key]));
 
-        if (!itemFields.Name || !itemFields.Price || !itemFields.ImageUpload) {
-            alert("Please fill in all required fields.");
+        // Declare formData at the beginning
+        const formData = new FormData();
+
+        // Check if at least one image is uploaded and other fields are filled
+        if (!itemFields.Name || !itemFields.Price || !(itemFields.ImageUpload || itemFields.ImageUpload2 || itemFields.ImageUpload3)) {
+            alert("Please fill in all required fields, including at least one image.");
             return;
         }
 
+        // Append non-null fields to formData
+        Object.keys(itemFields).forEach(key => {
+            if (itemFields[key] !== null) {
+                formData.append(key, itemFields[key]);
+            }
+        });
         try {
             const response = await axios.post('/Item/Create', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },

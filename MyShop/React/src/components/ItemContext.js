@@ -1,4 +1,4 @@
-﻿import React, { createContext, useState, useEffect, useContext } from 'react';
+﻿import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 
 const ItemsContext = createContext();
 
@@ -7,9 +7,9 @@ export const useItems = () => useContext(ItemsContext);
 export const ItemsProvider = ({ children }) => {
     const [items, setItems] = useState([]);
 
-    const fetchItems = async () => {
+    const fetchItems = useCallback(async () => {
         try {
-            const response = await fetch('/Item/GetData'); // Adjust the endpoint as needed
+            const response = await fetch('/Item/GetData');
             if (response.ok) {
                 const data = await response.json();
                 setItems(data);
@@ -19,7 +19,7 @@ export const ItemsProvider = ({ children }) => {
         } catch (error) {
             console.error('Error fetching items:', error);
         }
-    };
+    }, []);
 
     useEffect(() => {
         fetchItems();

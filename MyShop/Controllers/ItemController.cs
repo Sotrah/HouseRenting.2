@@ -88,14 +88,21 @@ public class ItemController : Controller
     }
     */
     [HttpPost]
-    [Authorize]
     public async Task<IActionResult> Create([FromForm] ItemCreateViewModel model)
     {
         if (ModelState.IsValid)
         {
-            var user = await _userManager.GetUserAsync(User);
-            string userId = user.Id;
+            string userId;
+            CustomerUser user = await _userManager.GetUserAsync(User);
 
+            if (user != null)
+            {
+                userId = user.Id;
+            }
+            else
+            {
+                userId = Constants.DemoUserId;
+            }
             var imageUrl = await UploadImage(model.ImageUpload);
             var imageUrl2 = await UploadImage(model.ImageUpload2);
             var imageUrl3 = await UploadImage(model.ImageUpload3);
@@ -232,9 +239,8 @@ public class ItemController : Controller
         return View(item);
     }
 
-    [HttpPost]
-    [Authorize]
-    public async Task<IActionResult> DeleteConfirmed(int id)
+    /*[HttpPost]
+ /*   public async Task<IActionResult> DeleteConfirmed(int id)
     {
         bool returnOk = await _itemRepository.Delete(id);
         if (!returnOk)
@@ -243,7 +249,8 @@ public class ItemController : Controller
             return BadRequest("Item deletion failed");
         }
         return RedirectToAction(nameof(Table));
-    }
+    }*/
+
     private async Task<string> UploadImage(IFormFile imageFile)
     {
         if (imageFile == null || imageFile.Length == 0) return null;
