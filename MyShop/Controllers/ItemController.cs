@@ -174,59 +174,54 @@ public class ItemController : Controller
         return View(itemUpdateViewModel);
     }
     */
-    [HttpPost]
-    [Authorize]
-    public async Task<IActionResult> Update([FromForm] ItemUpdateViewModel model)
+    [HttpPut("{itemId}")]
+    public async Task<IActionResult> Update(int itemId, [FromForm] ItemUpdateViewModel model)
     {
-        if (ModelState.IsValid)
-        {
-            var item = await _itemRepository.GetItemById(model.ItemId);
-            if (item == null)
-            {
-                _logger.LogError("[ItemController] Item not found when updating the ItemId {ItemId:0000}", model.ItemId);
-                return BadRequest("Item not found for the ItemId");
-            }
-
-            item.Name = model.Name;
-            item.Price = model.Price;
-            item.Description = model.Description;
-            item.Phone = model.Phone;
-            item.Rooms = model.Rooms;
-            item.Beds = model.Beds;
-            item.Guests = model.Guests;
-            item.Baths = model.Baths;
-
-            // Check and update images if needed
-            if (model.ImageUpload != null && model.ImageUpload.Length > 0)
-            {
-                item.ImageUrl = await UploadImage(model.ImageUpload);
-            }
-            if (model.ImageUpload2 != null && model.ImageUpload2.Length > 0)
-            {
-                item.ImageUrl2 = await UploadImage(model.ImageUpload2);
-            }
-            if (model.ImageUpload3 != null && model.ImageUpload3.Length > 0)
-            {
-                item.ImageUrl3 = await UploadImage(model.ImageUpload3);
-            }
-
-            bool returnOk = await _itemRepository.Update(item);
-            if (returnOk)
-            {
-                return Ok(item); // Return the updated item or just an Ok response
-            }
-            else
-            {
-                return BadRequest("Failed to update item");
-            }
-        }
-        else
+        if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
+
+        var item = await _itemRepository.GetItemById(itemId);
+        if (item == null)
+        {
+            _logger.LogError("[ItemController] Item not found when updating the ItemId {ItemId:0000}", itemId);
+            return BadRequest("Item not found for the ItemId");
+        }
+
+        item.Name = model.Name;
+        item.Price = model.Price;
+        item.Description = model.Description;
+        item.Phone = model.Phone;
+        item.Rooms = model.Rooms;
+        item.Beds = model.Beds;
+        item.Guests = model.Guests;
+        item.Baths = model.Baths;
+
+        // Check and update images if needed
+        if (model.ImageUpload != null && model.ImageUpload.Length > 0)
+        {
+            item.ImageUrl = await UploadImage(model.ImageUpload);
+        }
+        if (model.ImageUpload2 != null && model.ImageUpload2.Length > 0)
+        {
+            item.ImageUrl2 = await UploadImage(model.ImageUpload2);
+        }
+        if (model.ImageUpload3 != null && model.ImageUpload3.Length > 0)
+        {
+            item.ImageUrl3 = await UploadImage(model.ImageUpload3);
+        }
+
+        bool returnOk = await _itemRepository.Update(item);
+        if (!returnOk)
+        {
+            return BadRequest("Failed to update item");
+        }
+        return Ok(item); // Return the updated item
     }
 
-    [HttpGet]
+
+            [HttpGet]
     [Authorize]
     public async Task<IActionResult> Delete(int id)
     {

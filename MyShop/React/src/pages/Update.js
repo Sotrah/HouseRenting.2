@@ -1,7 +1,10 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { useItems } from '../components/ItemContext';
+
 const UpdateListing = () => {
-    const [item, setItem] = useState({
+    const [itemFields, setItemFields] = useState({
         // Initialize the state with all the fields you need
         itemId: '',
         name: '',
@@ -13,48 +16,68 @@ const UpdateListing = () => {
         beds: '',
         guests: '',
         baths: '',
+        ImageUpload: null,
+        ImageUpload2: null,
+        ImageUpload3: null,
     });
     const { itemId } = useParams(); // Get the item ID from the URL
     const navigate = useNavigate();
+    const { fetchItems } = useItems(); // Use the fetchItems function from context
 
     useEffect(() => {
-        // Fetch the item details using itemId and set it in state
+        // Fetch the item details using itemId
         fetch(`/Item/GetItem/${itemId}`)
             .then(response => response.json())
-            .then(data => {
-                if (data) {
-                    setItem(data);
-                } else {
-                    console.error('Item not found');
-                }
-            })
+            .then(data => setItemFields(data))
             .catch(error => console.error('Unable to get item:', error));
     }, [itemId]);
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setItem(prevState => ({
-            ...prevState,
-            [name]: value
-        }));
+
+    const handleFileChange = (e) => {
+        setItemFields({ ...itemFields, [e.target.name]: e.target.files[0] });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        // You'll need to handle the form submission here
-        console.log('Form submitted:', item);
-        // Implement the update logic, possibly using a POST request
+
+        const formData = new FormData();
+        Object.keys(itemFields).forEach(key => {
+            // Append files and other fields separately
+            if (key === 'ImageUpload' || key === 'ImageUpload2' || key === 'ImageUpload3') {
+                if (itemFields[key] instanceof File) {
+                    formData.append(key, itemFields[key]);
+                }
+            } else {
+                formData.append(key, itemFields[key]);
+            }
+        });
+
+        try {
+            const response = await axios.put(`/Item/Update/${itemId}`, formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+
+            if (response.status >= 200 && response.status < 300) {
+                fetchItems(); // Update the item list
+                navigate('/'); // Navigate to the home page or listings page
+            } else {
+                alert('Failed to update item. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred while updating the item.');
+        }
     };
 
     const handleCancel = () => {
-        navigate.push('/table'); // Navigate back to the table view
+        navigate.push('/EditListings'); // Navigate back to the table view
     };
 
     return (
         <div>
             <h2>Update Listing</h2>
             <form onSubmit={handleSubmit} encType="multipart/form-data">
-                <input type="hidden" name="itemId" value={item.itemId} />
+                <input type="hidden" name="itemId" value={itemFields.itemId} />
 
                 <div className="form-group">
                     <label>Name</label>
