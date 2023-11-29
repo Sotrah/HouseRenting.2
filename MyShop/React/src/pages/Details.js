@@ -71,6 +71,13 @@ const ItemDisplay = () => {
             });
         });
     }, [item, itemFields]);
+                
+
+
+    // Extracted from item for easier access (item || is used for when there might be an empty call) 
+    const { imageUrl, imageUrl2, imageUrl3, name, description, guests, rooms, beds, baths, phone, address, customerUserEmail, price } = item || {};
+    const hasSecondImage = imageUrl2 && imageUrl2.trim() !== '';
+    const hasThirdImage = imageUrl3 && imageUrl3.trim() !== '';
 
 
     const navigate = useNavigate();
@@ -111,6 +118,7 @@ const ItemDisplay = () => {
                 setItemFields({
                     BookingDate: '',
                 });
+                /*fetchItems(); // Call fetchItems to update the item list*/
                 console.log("Navigating to home");
                 navigate("/");
             } else {
