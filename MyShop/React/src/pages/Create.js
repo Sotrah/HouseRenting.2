@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { createContext, useState, useEffect, useContext, useCallback } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-
-
+import { useItems } from '../components/ItemContext';
 const CreateItem = () => {
-    const [items, setItems] = useState({
+    // Correctly initialize your item's form fields
+    const [itemFields, setItemFields] = useState({
         Name: '',
         Price: '',
         Description: '',
@@ -19,35 +19,35 @@ const CreateItem = () => {
         ImageUpload3: null,
     });
 
-  
-const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setItems({ ...items, [name]: value });
-};
-
-const handleFileChange = (event) => {
-    setItems({ ...items, [event.target.name]: event.target.files[0] });
-};
-
+    const { fetchItems } = useItems(); // Destructure fetchItems from the hook
     const navigate = useNavigate();
+
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setItemFields({ ...itemFields, [name]: value });
+    };
+
+    const handleFileChange = (event) => {
+        setItemFields({ ...itemFields, [event.target.name]: event.target.files[0] });
+    };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         const formData = new FormData();
-        Object.keys(items).forEach(key => formData.append(key, items[key]));
+        Object.keys(itemFields).forEach(key => formData.append(key, itemFields[key]));
 
-        if (!items.Name || !items.Price || !items.ImageUpload) {
-        alert("Please fill in all required fields.");
-        return;
-    }
+        if (!itemFields.Name || !itemFields.Price || !itemFields.ImageUpload) {
+            alert("Please fill in all required fields.");
+            return;
+        }
+
         try {
             const response = await axios.post('/Item/Create', formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
 
             if (response.status === 200) {
-                // Handle success (e.g., clear the form or redirect)
-                setItems({
+                setItemFields({
                     Name: '',
                     Price: '',
                     Description: '',
@@ -61,11 +61,10 @@ const handleFileChange = (event) => {
                     ImageUpload2: null,
                     ImageUpload3: null,
                 });
+                fetchItems(); // Call fetchItems to update the item list
                 console.log("Navigating to home");
-
                 navigate("/");
             } else {
-                // Handle server-side validation error or other non-200 responses
                 alert("Failed to create item. Please try again.");
             }
         } catch (error) {
@@ -75,45 +74,46 @@ const handleFileChange = (event) => {
     };
 
 
+
 return (
     <div className="container">
         <h2>Create Listing</h2>
         <form onSubmit={handleSubmit}>
             <div className="form-group">
                 <label htmlFor="Name">Name</label>
-                <input type="text" name="Name" value={items.Name} onChange={handleInputChange} />
+                <input type="text" name="Name" value={itemFields.Name} onChange={handleInputChange} />
             </div>
             <div className="form-group">
                 <label htmlFor="Price">Price per night</label>
-                <input type="text" name="Price" value={items.Price} onChange={handleInputChange} />
+                <input type="text" name="Price" value={itemFields.Price} onChange={handleInputChange} />
             </div>
             <div className="form-group">
                 <label htmlFor="Description">Description</label>
-                <input type="text" name="Description" value={items.Description} onChange={handleInputChange} />
+                <input type="text" name="Description" value={itemFields.Description} onChange={handleInputChange} />
             </div>
             <div className="form-group">
                 <label htmlFor="Address">Address</label>
-                <input type="text" name="Address" value={items.Address} onChange={handleInputChange} />
+                <input type="text" name="Address" value={itemFields.Address} onChange={handleInputChange} />
             </div>
             <div className="form-group">
                 <label htmlFor="Phone">Phone number</label>
-                <input type="number" name="Phone" value={items.Phone} onChange={handleInputChange} />
+                <input type="number" name="Phone" value={itemFields.Phone} onChange={handleInputChange} />
             </div>
             <div className="form-group">
                 <label htmlFor="Rooms">Rooms</label>
-                <input type="number" name="Rooms" value={items.Rooms} onChange={handleInputChange} />
+                <input type="number" name="Rooms" value={itemFields.Rooms} onChange={handleInputChange} />
             </div>
             <div className="form-group">
                 <label htmlFor="Beds">Beds</label>
-                <input type="number" name="Beds" value={items.Beds} onChange={handleInputChange} />
+                <input type="number" name="Beds" value={itemFields.Beds} onChange={handleInputChange} />
             </div>
             <div className="form-group">
                 <label htmlFor="Guests">Guests</label>
-                <input type="number" name="Guests" value={items.Guests} onChange={handleInputChange} />
+                <input type="number" name="Guests" value={itemFields.Guests} onChange={handleInputChange} />
             </div>
             <div className="form-group">
                 <label htmlFor="Baths">Baths</label>
-                <input type="number" name="Baths" value={items.Baths} onChange={handleInputChange} />
+                <input type="number" name="Baths" value={itemFields.Baths} onChange={handleInputChange} />
             </div>
             <div className="form-group">
                 <label htmlFor="ImageUpload">Image 1</label>

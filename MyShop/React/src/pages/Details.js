@@ -1,6 +1,5 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
-import Flatpickr from "react-flatpickr";
 
 const ItemDisplay = () => {
     const { id } = useParams();

@@ -9,6 +9,7 @@ import ItemListView from './components/ItemListViewModel';
 import BookingTable from "./pages/BookingTable";
 import CustomerUserTable from "./pages/CustomerUserTable";
 import './styles/Layout.css';
+import { ItemsProvider } from './components/ItemContext';
 import EditListings from './pages/EditListings';
 import ItemDisplay from './pages/Details';
 import Create from './pages/Create';
@@ -19,6 +20,7 @@ function App() {
     return (
         <div className="App">
             <BrowserRouter>
+                <ItemsProvider>      
                 <Layout>
                     <Routes>
                         <Route path="/ctest" element={<ControllerTest />} />
@@ -32,6 +34,7 @@ function App() {
                         <Route path="/update/:id" element={<UpdateListing />} />
                     </Routes>
                 </Layout>
+                </ItemsProvider>
             </BrowserRouter>
         </div>
     )

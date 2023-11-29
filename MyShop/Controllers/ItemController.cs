@@ -43,7 +43,7 @@ public class ItemController : Controller
         }
         return Json(item);
     }
-
+    /*
     public async Task<IActionResult> Table()
     {
         var items = await _itemRepository.GetAll();
@@ -78,17 +78,18 @@ public class ItemController : Controller
         }
         return View(item);
     }
-
+    */
+    /*
     [HttpGet]
     [Authorize]
     public IActionResult Create()
     {
-        return View();
+        return Json(items);
     }
-
+    */
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> Create(ItemCreateViewModel model)
+    public async Task<IActionResult> Create([FromForm] ItemCreateViewModel model)
     {
         if (ModelState.IsValid)
         {
@@ -101,8 +102,8 @@ public class ItemController : Controller
 
             if (imageUrl == null)
             {
-                ModelState.AddModelError("ImageUpload", "Please upload an image.");
-                return View(model);
+                return BadRequest("Image upload failed");
+
             }
             var item = new Item
             {
@@ -124,13 +125,20 @@ public class ItemController : Controller
 
             bool returnOk = await _itemRepository.Create(item);
             if (returnOk)
-                return RedirectToAction(nameof(Table));
-
-            return View(model);
+            {
+                return CreatedAtAction(nameof(GetItem), new { id = item.ItemId }, item);
+            }
+            else
+            {
+                return BadRequest("Failed to create item");
+            }
         }
-        return View(model); // This will catch all other scenarios
+        else
+        {
+            return BadRequest(ModelState);
+        }
     }
-
+    /*
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> Update(int id)
@@ -158,10 +166,10 @@ public class ItemController : Controller
 
         return View(itemUpdateViewModel);
     }
-
+    */
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> Update(ItemUpdateViewModel model)
+    public async Task<IActionResult> Update([FromForm] ItemUpdateViewModel model)
     {
         if (ModelState.IsValid)
         {
@@ -197,11 +205,18 @@ public class ItemController : Controller
 
             bool returnOk = await _itemRepository.Update(item);
             if (returnOk)
-                return RedirectToAction(nameof(Table));
+            {
+                return Ok(item); // Return the updated item or just an Ok response
+            }
+            else
+            {
+                return BadRequest("Failed to update item");
+            }
         }
-
-        _logger.LogWarning("[ItemController] Item update failed for ItemId {ItemId:0000}", model.ItemId);
-        return View(model);
+        else
+        {
+            return BadRequest(ModelState);
+        }
     }
 
     [HttpGet]
