@@ -147,7 +147,7 @@ public class ItemController : Controller
     }
     /*
     [HttpGet]
-    [Authorize]
+    [Authorize] 
     public async Task<IActionResult> Update(int id)
     {
         var item = await _itemRepository.GetItemById(id);

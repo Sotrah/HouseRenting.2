@@ -1,7 +1,8 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import '../../../wwwroot/lib/bootstrap/js/bootstrap.js';
 import '../../../wwwroot/lib/bootstrap/css/custom.css';
-import '../styles/Layout.css'; // Ensure this import is correct
+import '../styles/Layout.css';
 
 const Navbar = () => {
 

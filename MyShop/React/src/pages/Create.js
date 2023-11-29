@@ -54,7 +54,7 @@ const CreateItem = () => {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
 
-            if (response.status === 200) {
+            if (response.status >= 200 && response.status < 300) {
                 setItemFields({
                     Name: '',
                     Price: '',
