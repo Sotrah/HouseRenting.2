@@ -1,15 +1,18 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import React, { createContext, useRef, useState, useEffect, useContext, useCallback } from 'react';
 import { useParams } from 'react-router-dom';
-import axios from "axios";
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import { useItems } from '../components/ItemContext';
+import Flatpickr from 'flatpickr';
 
 const ItemDisplay = () => {
     const { id } = useParams();
     const [item, setItem] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [formData, setFormData] = useState({
-        bookingDate: "",
-        itemId: ""
+    const [itemFields, setItemFields] = useState({
+        bookingDate: '',
+        itemId: '',
     });
 
     useEffect(() => {
@@ -30,21 +33,22 @@ const ItemDisplay = () => {
         fetchItemDetails();
     }, [id]);
 
-    // Initialize the flatpickr for the date picker
+    const flatpickrRef = useRef(null);
+
     useEffect(() => {
         if (!item || !item.bookings) return;
 
-        // Process bookings data outside of the dynamic import
         const bookings = item.bookings.map(booking => booking.bookingDate.split("T")[0]);
         const dates = bookings.length > 0 ? bookings : ["1999-12-12"];
 
-        // Dynamic import of flatpickr
         import('flatpickr').then(({ default: flatpickr }) => {
-            flatpickr("#datePicker", {
+            
+
+            flatpickrRef.current = flatpickr("#datePicker", {
                 minDate: "today",
                 dateFormat: "Y-m-d",
                 disable: dates,
-                allowInput: true,
+                allowInput: false,
                 onOpen: function (selectedDates, dateStr, instance) {
                     // Check if altInput is available before setting readOnly
                     if (instance.altInput) {
@@ -57,45 +61,70 @@ const ItemDisplay = () => {
                         instance.altInput.readOnly = false;
                         instance.altInput.blur();
                     }
+                },
+                onChange: function (selectedDates, dateStr, instance) {
+                    setItemFields({
+                        bookingDate: dateStr,
+                        itemId: id,
+                    });
                 }
             });
         });
+    }, [item, itemFields]);
 
-    }, [item]);
+
+    const navigate = useNavigate();
+
+    const handleInputChange = (event) => {
+        const { name, value } = event.target;
+        setItemFields(prevFields => ({
+            ...prevFields,
+            [name]: value,
+        }));
+    };
+
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        // Declare formData at the beginning
+        const formData = new FormData();
+
+        // Check if at least one image is uploaded and other fields are filled
+        if (!itemFields.bookingDate) {
+            alert("Please fill in all required fields");
+            return;
+        }
+
+        // Append non-null fields to formData
+        Object.keys(itemFields).forEach(key => {
+            if (itemFields[key] !== null) {
+                formData.append(key, itemFields[key]);
+            }
+        });
+        try {
+            const response = await axios.post('/Booking/createbooking', formData, {
+                headers: { 'Content-Type': 'multipart/form-data' },
+            });
+
+            if (response.status >= 200 && response.status < 300) {
+                setItemFields({
+                    BookingDate: '',
+                });
+                console.log("Navigating to home");
+                navigate("/");
+            } else {
+                alert("Failed to create item. Please try again.");
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert("An error occurred while creating the item.");
+        }
+    };
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
     if (!item) return <div>No item found</div>;
-
-    // Extracted from item for easier access (item || is used for when there might be an empty call) 
-    const { imageUrl, imageUrl2, imageUrl3, name, description, guests, rooms, beds, baths, phone, address, customerUserEmail, price } = item || {};
-    const hasSecondImage = imageUrl2 && imageUrl2.trim() !== '';
-    const hasThirdImage = imageUrl3 && imageUrl3.trim() !== '';
-
-
-    const handleChange = (e) => {
-        const value = e.target.value;
-        setFormData({
-            ...formData,
-            [e.target.name]: value
-        });
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const userData = {
-            bookingDate: formData.bookingDate,
-            itemId: id
-        };
-        axios.post("/booking/createbooking", formData, {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then((response) => {
-            console.log(response.status, response.data.token);
-        });
-    };
-
    
     return (
         <div className="listing-border">
@@ -157,12 +186,12 @@ const ItemDisplay = () => {
                             <form onSubmit={handleSubmit}>
                                 <div className="form-group text">
                                     <p>
-                                        <input type="text" name="bookingDate" value={formData.bookingDate}
-                                            onChange={handleChange} placeholder="Select Date.." id="datePicker" autoComplete="off" required />
+                                        <input type="text" name="bookingDate" value={itemFields.bookingDate}
+                                            onChange={handleInputChange} placeholder="Select Date.." id="datePicker" autoComplete="off" required />
                                     </p>
                                 </div>
                                 <div className="form-group">
-                                    <input type="hidden" name="itemId" value={item ? item.itemId : ''} />
+                                    <input type="hidden" name="itemId" value={id} />
                                 </div>
                                 <button type="submit" className="btn btn-primary">Book Stay</button>
                             </form>

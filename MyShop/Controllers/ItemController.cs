@@ -43,7 +43,7 @@ public class ItemController : Controller
         }
         return Json(item);
     }
-    /*
+    
     public async Task<IActionResult> Table()
     {
         var items = await _itemRepository.GetAll();
@@ -78,7 +78,7 @@ public class ItemController : Controller
         }
         return View(item);
     }
-    */
+    
     /*
     [HttpGet]
     [Authorize]
