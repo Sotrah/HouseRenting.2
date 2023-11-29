@@ -43,7 +43,7 @@ public class ItemController : Controller
         }
         return Json(item);
     }
-
+    /*
     public async Task<IActionResult> Table()
     {
         var items = await _itemRepository.GetAll();
@@ -78,31 +78,39 @@ public class ItemController : Controller
         }
         return View(item);
     }
-
+    */
+    /*
     [HttpGet]
     [Authorize]
     public IActionResult Create()
     {
-        return View();
+        return Json(items);
     }
-
+    */
     [HttpPost]
-    [Authorize]
-    public async Task<IActionResult> Create(ItemCreateViewModel model)
+    public async Task<IActionResult> Create([FromForm] ItemCreateViewModel model)
     {
         if (ModelState.IsValid)
         {
-            var user = await _userManager.GetUserAsync(User);
-            string userId = user.Id;
+            string userId;
+            CustomerUser user = await _userManager.GetUserAsync(User);
 
+            if (user != null)
+            {
+                userId = user.Id;
+            }
+            else
+            {
+                userId = Constants.DemoUserId;
+            }
             var imageUrl = await UploadImage(model.ImageUpload);
             var imageUrl2 = await UploadImage(model.ImageUpload2);
             var imageUrl3 = await UploadImage(model.ImageUpload3);
 
             if (imageUrl == null)
             {
-                ModelState.AddModelError("ImageUpload", "Please upload an image.");
-                return View(model);
+                return BadRequest("Image upload failed");
+
             }
             var item = new Item
             {
@@ -124,15 +132,22 @@ public class ItemController : Controller
 
             bool returnOk = await _itemRepository.Create(item);
             if (returnOk)
-                return RedirectToAction(nameof(Table));
-
-            return View(model);
+            {
+                return CreatedAtAction(nameof(GetItem), new { id = item.ItemId }, item);
+            }
+            else
+            {
+                return BadRequest("Failed to create item");
+            }
         }
-        return View(model); // This will catch all other scenarios
+        else
+        {
+            return BadRequest(ModelState);
+        }
     }
-
+    /*
     [HttpGet]
-    [Authorize]
+    [Authorize] 
     public async Task<IActionResult> Update(int id)
     {
         var item = await _itemRepository.GetItemById(id);
@@ -158,53 +173,55 @@ public class ItemController : Controller
 
         return View(itemUpdateViewModel);
     }
-
-    [HttpPost]
-    [Authorize]
-    public async Task<IActionResult> Update(ItemUpdateViewModel model)
+    */
+    [HttpPut("{itemId}")]
+    public async Task<IActionResult> Update(int itemId, [FromForm] ItemUpdateViewModel model)
     {
-        if (ModelState.IsValid)
+        if (!ModelState.IsValid)
         {
-            var item = await _itemRepository.GetItemById(model.ItemId);
-            if (item == null)
-            {
-                _logger.LogError("[ItemController] Item not found when updating the ItemId {ItemId:0000}", model.ItemId);
-                return BadRequest("Item not found for the ItemId");
-            }
-
-            item.Name = model.Name;
-            item.Price = model.Price;
-            item.Description = model.Description;
-            item.Phone = model.Phone;
-            item.Rooms = model.Rooms;
-            item.Beds = model.Beds;
-            item.Guests = model.Guests;
-            item.Baths = model.Baths;
-
-            // Check and update images if needed
-            if (model.ImageUpload != null && model.ImageUpload.Length > 0)
-            {
-                item.ImageUrl = await UploadImage(model.ImageUpload);
-            }
-            if (model.ImageUpload2 != null && model.ImageUpload2.Length > 0)
-            {
-                item.ImageUrl2 = await UploadImage(model.ImageUpload2);
-            }
-            if (model.ImageUpload3 != null && model.ImageUpload3.Length > 0)
-            {
-                item.ImageUrl3 = await UploadImage(model.ImageUpload3);
-            }
-
-            bool returnOk = await _itemRepository.Update(item);
-            if (returnOk)
-                return RedirectToAction(nameof(Table));
+            return BadRequest(ModelState);
         }
 
-        _logger.LogWarning("[ItemController] Item update failed for ItemId {ItemId:0000}", model.ItemId);
-        return View(model);
+        var item = await _itemRepository.GetItemById(itemId);
+        if (item == null)
+        {
+            _logger.LogError("[ItemController] Item not found when updating the ItemId {ItemId:0000}", itemId);
+            return BadRequest("Item not found for the ItemId");
+        }
+
+        item.Name = model.Name;
+        item.Price = model.Price;
+        item.Description = model.Description;
+        item.Phone = model.Phone;
+        item.Rooms = model.Rooms;
+        item.Beds = model.Beds;
+        item.Guests = model.Guests;
+        item.Baths = model.Baths;
+
+        // Check and update images if needed
+        if (model.ImageUpload != null && model.ImageUpload.Length > 0)
+        {
+            item.ImageUrl = await UploadImage(model.ImageUpload);
+        }
+        if (model.ImageUpload2 != null && model.ImageUpload2.Length > 0)
+        {
+            item.ImageUrl2 = await UploadImage(model.ImageUpload2);
+        }
+        if (model.ImageUpload3 != null && model.ImageUpload3.Length > 0)
+        {
+            item.ImageUrl3 = await UploadImage(model.ImageUpload3);
+        }
+
+        bool returnOk = await _itemRepository.Update(item);
+        if (!returnOk)
+        {
+            return BadRequest("Failed to update item");
+        }
+        return Ok(item); // Return the updated item
     }
 
-    [HttpGet]
+
+            [HttpGet]
     [Authorize]
     public async Task<IActionResult> Delete(int id)
     {
@@ -217,9 +234,8 @@ public class ItemController : Controller
         return View(item);
     }
 
-    [HttpPost]
-    [Authorize]
-    public async Task<IActionResult> DeleteConfirmed(int id)
+    /*[HttpPost]
+ /*   public async Task<IActionResult> DeleteConfirmed(int id)
     {
         bool returnOk = await _itemRepository.Delete(id);
         if (!returnOk)
@@ -228,7 +244,8 @@ public class ItemController : Controller
             return BadRequest("Item deletion failed");
         }
         return RedirectToAction(nameof(Table));
-    }
+    }*/
+
     private async Task<string> UploadImage(IFormFile imageFile)
     {
         if (imageFile == null || imageFile.Length == 0) return null;

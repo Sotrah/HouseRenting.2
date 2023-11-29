@@ -26,7 +26,9 @@ public class CustomerUserController : Controller
     }
     public async Task<ActionResult> GetUser()
     {
-        CustomerUser loggedInUser = await _itemDbContext.CustomerUsers.FindAsync("5124afd8-451c-49fc-a15a-ab784ece9256");
+        /*CustomerUser loggedInUser = await _itemDbContext.CustomerUsers.FindAsync("5124afd8-451c-49fc-a15a-ab784ece9256");
+        return Json(loggedInUser); */
+        CustomerUser loggedInUser = await _itemDbContext.CustomerUsers.FindAsync(Constants.DemoUserId);
         return Json(loggedInUser);
     }
 }

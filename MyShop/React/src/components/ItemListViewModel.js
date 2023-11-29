@@ -1,15 +1,13 @@
-﻿import React, { useState, useEffect } from 'react';
+﻿import React, { useEffect } from 'react';
+import { useItems } from '../components/ItemContext'; 
 import ItemCard from './ItemCard';
 
 const ItemListView = () => {
-    const [items, setItems] = useState([]);
+    const { items, fetchItems } = useItems();
 
     useEffect(() => {
-        fetch('/Item/GetData')
-            .then(response => response.json())
-            .then(data => setItems(data))
-            .catch(error => console.error('Error fetching items:', error));
-    }, []);
+        fetchItems(); // Call fetchItems from context
+    }, [fetchItems]); // Add fetchItems as a dependency
 
     return (
         <div className="container">
