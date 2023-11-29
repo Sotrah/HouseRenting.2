@@ -56,6 +56,7 @@ if (!app.Environment.IsDevelopment())
 }
 DBInit.Seed(app);
 
+
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
@@ -64,12 +65,14 @@ app.UseSession();
 app.UseAuthentication();
 app.UseAuthorization();
 
-app.MapRazorPages();
-
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller}/{action=Index}/{id?}"
-);
-app.MapFallbackToFile("index.html");;
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapRazorPages();
+    endpoints.MapControllers(); // Add this line for API controllers
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller}/{action=Index}/{id?}");
+    endpoints.MapFallbackToFile("index.html");
+});
 
 app.Run();

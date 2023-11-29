@@ -1,19 +1,19 @@
-﻿import React, { useState, useEffect } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+﻿import 'bootstrap/dist/css/bootstrap.min.css';
+import React from 'react';
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import '../../wwwroot/lib/bootstrap/css/bootstrap.css';
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import ControllerTest from "./ControllerTest"
+import ControllerTest from "./ControllerTest";
 import Test from "./Test";
-import Layout from "./components/Layout";
-import ItemListView from './components/ItemListViewModel';
-import BookingTable from "./pages/BookingTable";
-import CustomerUserTable from "./pages/CustomerUserTable";
-import './styles/Layout.css';
 import { ItemsProvider } from './components/ItemContext';
-import EditListings from './pages/EditListings';
-import ItemDisplay from './pages/Details';
+import ItemListView from './components/ItemListViewModel';
+import Layout from "./components/Layout";
+import BookingTable from "./pages/BookingTable";
 import Create from './pages/Create';
+import CustomerUserTable from "./pages/CustomerUserTable";
+import ItemDisplay from './pages/Details';
+import EditListings from './pages/EditListings';
 import UpdateListing from './pages/Update';
+import './styles/Layout.css';
 
 
 function App() {
@@ -31,8 +31,8 @@ function App() {
                         <Route path="/EditListings" element={<EditListings />} />
                         <Route path="/item/:id" element={<ItemDisplay />} />
                         <Route path="/Create" element={<Create />} />
-                        <Route path="/update/:id" element={<UpdateListing />} />
-                    </Routes>
+                        <Route path="/update/:itemId" element={<UpdateListing />} />
+                     </Routes>
                 </Layout>
                 </ItemsProvider>
             </BrowserRouter>

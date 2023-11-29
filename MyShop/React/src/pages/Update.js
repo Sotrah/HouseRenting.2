@@ -32,11 +32,18 @@ const UpdateListing = () => {
             .catch(error => console.error('Unable to get item:', error));
     }, [itemId]);
 
-
+    
     const handleFileChange = (e) => {
         setItemFields({ ...itemFields, [e.target.name]: e.target.files[0] });
     };
-
+    
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setItemFields(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
+    };
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -53,13 +60,14 @@ const UpdateListing = () => {
         });
 
         try {
-            const response = await axios.put(`/Item/Update/${itemId}`, formData, {
+            const response = await axios.put(`http://localhost:7205/Item/Update/${itemId}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
 
-            if (response.status >= 200 && response.status < 300) {
+
+            if (response.ok) {
                 fetchItems(); // Update the item list
-                navigate('/'); // Navigate to the home page or listings page
+                navigate('/EditListings/'); // Navigate to the home page or listings page
             } else {
                 alert('Failed to update item. Please try again.');
             }
@@ -70,7 +78,7 @@ const UpdateListing = () => {
     };
 
     const handleCancel = () => {
-        navigate.push('/EditListings'); // Navigate back to the table view
+        navigate.push('/'); // Navigate back to the table view
     };
 
     return (
@@ -81,57 +89,57 @@ const UpdateListing = () => {
 
                 <div className="form-group">
                     <label>Name</label>
-                    <input type="text" name="name" className="form-control" value={item.name} onChange={handleChange} />
+                    <input type="text" name="name" className="form-control" value={itemFields.name} onChange={handleChange} />
                 </div>
 
                 <div className="form-group">
                     <label>Price</label>
-                    <input type="number" name="price" className="form-control" value={item.price} onChange={handleChange} />
+                    <input type="number" name="price" className="form-control" value={itemFields.price} onChange={handleChange} />
                 </div>
 
                 <div className="form-group">
                     <label>Description</label>
-                    <textarea name="description" className="form-control" value={item.description} onChange={handleChange} />
+                    <textarea name="description" className="form-control" value={itemFields.description} onChange={handleChange} />
                 </div>
 
                 <div className="form-group">
                     <label>Phone</label>
-                    <input type="tel" name="phone" className="form-control" value={item.phone} onChange={handleChange} />
+                    <input type="tel" name="phone" className="form-control" value={itemFields.phone} onChange={handleChange} />
                 </div>
 
                 <div className="form-group">
                     <label>Rooms</label>
-                    <input type="number" name="rooms" className="form-control" value={item.rooms} onChange={handleChange} />
+                    <input type="number" name="rooms" className="form-control" value={itemFields.rooms} onChange={handleChange} />
                 </div>
 
                 <div className="form-group">
                     <label>Beds</label>
-                    <input type="number" name="beds" className="form-control" value={item.beds} onChange={handleChange} />
+                    <input type="number" name="beds" className="form-control" value={itemFields.beds} onChange={handleChange} />
                 </div>
 
                 <div className="form-group">
                     <label>Guests</label>
-                    <input type="number" name="guests" className="form-control" value={item.guests} onChange={handleChange} />
+                    <input type="number" name="guests" className="form-control" value={itemFields.guests} onChange={handleChange} />
                 </div>
 
                 <div className="form-group">
                     <label>Baths</label>
-                    <input type="number" name="baths" className="form-control" value={item.baths} onChange={handleChange} />
+                    <input type="number" name="baths" className="form-control" value={itemFields.baths} onChange={handleChange} />
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="ImageUpload">Image 1</label>
-                    <input type="file" id="ImageUpload" name="ImageUpload" className="form-control" accept="image/*" />
+                    <input type="file" id="ImageUpload" name="ImageUpload" className="form-control" accept="image/*" onChange={handleFileChange} />
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="ImageUpload2">Image 2</label>
-                    <input type="file" id="ImageUpload2" name="ImageUpload2" className="form-control" accept="image/*" />
+                    <input type="file" id="ImageUpload2" name="ImageUpload2" className="form-control" accept="image/*" onChange={handleFileChange} />
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="ImageUpload3">Image 3</label>
-                    <input type="file" id="ImageUpload3" name="ImageUpload3" className="form-control" accept="image/*" />
+                    <input type="file" id="ImageUpload3" name="ImageUpload3" className="form-control" accept="image/*" onChange={handleFileChange} />
                 </div>
 
                 <button type="submit" className="btn btn-primary mt-3">Save Changes</button>

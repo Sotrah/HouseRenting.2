@@ -43,50 +43,7 @@ public class ItemController : Controller
         }
         return Json(item);
     }
-    /*
-    public async Task<IActionResult> Table()
-    {
-        var items = await _itemRepository.GetAll();
-        if (items == null)
-        {
-            _logger.LogError("[ItemController] Item list not found while executing _itemRepository.GetAll()");
-            return NotFound("Item list not found");
-        }
-        var itemListViewModel = new ItemListViewModel(items, "Table");
-        return View(itemListViewModel);
-    }
 
-    public async Task<IActionResult> Grid()
-    {
-        var items = await _itemRepository.GetAll();
-        if (items == null)
-        {
-            _logger.LogError("[ItemController] Item list not found while executing _itemRepository.GetAll()");
-            return NotFound("Item list not found");
-        }
-        var itemListViewModel = new ItemListViewModel(items, "Grid");
-        return View(itemListViewModel);
-    }
-
-    public async Task<IActionResult> Details(int id)
-    {
-        var item = await _itemRepository.GetItemById(id);
-        if (item == null)
-        {
-            _logger.LogError("[ItemController] Item not found for the ItemId {ItemId:0000}", id);
-            return NotFound("Item not found for the ItemId");
-        }
-        return View(item);
-    }
-    */
-    /*
-    [HttpGet]
-    [Authorize]
-    public IActionResult Create()
-    {
-        return Json(items);
-    }
-    */
     [HttpPost]
     public async Task<IActionResult> Create([FromForm] ItemCreateViewModel model)
     {
@@ -145,35 +102,7 @@ public class ItemController : Controller
             return BadRequest(ModelState);
         }
     }
-    /*
-    [HttpGet]
-    [Authorize] 
-    public async Task<IActionResult> Update(int id)
-    {
-        var item = await _itemRepository.GetItemById(id);
-        if (item == null)
-        {
-            _logger.LogError("[ItemController] Item not found when updating the ItemId {ItemId:0000}", id);
-            return BadRequest("Item not found for the ItemId");
-        }
 
-        var itemUpdateViewModel = new ItemUpdateViewModel
-        {
-            ItemId = item.ItemId,
-            Name = item.Name,
-            Price = item.Price,
-            Description = item.Description,
-            Address = item.Address,
-            Phone = item.Phone,
-            Rooms = item.Rooms,
-            Beds = item.Beds,
-            Guests = item.Guests,
-            Baths = item.Baths,
-        };
-
-        return View(itemUpdateViewModel);
-    }
-    */
     [HttpPut("{itemId}")]
     public async Task<IActionResult> Update(int itemId, [FromForm] ItemUpdateViewModel model)
     {
@@ -192,6 +121,7 @@ public class ItemController : Controller
         item.Name = model.Name;
         item.Price = model.Price;
         item.Description = model.Description;
+        item.Address = model.Address;
         item.Phone = model.Phone;
         item.Rooms = model.Rooms;
         item.Beds = model.Beds;
