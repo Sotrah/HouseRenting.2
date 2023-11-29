@@ -43,7 +43,50 @@ public class ItemController : Controller
         }
         return Json(item);
     }
+    
+    public async Task<IActionResult> Table()
+    {
+        var items = await _itemRepository.GetAll();
+        if (items == null)
+        {
+            _logger.LogError("[ItemController] Item list not found while executing _itemRepository.GetAll()");
+            return NotFound("Item list not found");
+        }
+        var itemListViewModel = new ItemListViewModel(items, "Table");
+        return View(itemListViewModel);
+    }
 
+    public async Task<IActionResult> Grid()
+    {
+        var items = await _itemRepository.GetAll();
+        if (items == null)
+        {
+            _logger.LogError("[ItemController] Item list not found while executing _itemRepository.GetAll()");
+            return NotFound("Item list not found");
+        }
+        var itemListViewModel = new ItemListViewModel(items, "Grid");
+        return View(itemListViewModel);
+    }
+
+    public async Task<IActionResult> Details(int id)
+    {
+        var item = await _itemRepository.GetItemById(id);
+        if (item == null)
+        {
+            _logger.LogError("[ItemController] Item not found for the ItemId {ItemId:0000}", id);
+            return NotFound("Item not found for the ItemId");
+        }
+        return View(item);
+    }
+    
+    /*
+    [HttpGet]
+    [Authorize]
+    public IActionResult Create()
+    {
+        return Json(items);
+    }
+    */
     [HttpPost]
     public async Task<IActionResult> Create([FromForm] ItemCreateViewModel model)
     {

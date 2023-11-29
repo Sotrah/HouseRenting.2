@@ -34,14 +34,14 @@ public class BookingController : Controller
         return View(bookings);
     }
 
-    [Authorize]
+    //[Authorize]
     [HttpGet]
     public async Task<IActionResult> CreateBooking()
     {
         return RedirectToAction("Grid", "Item"); // If you try booking something without being logged in, you'll go to Item Grid after logging in
     }
 
-    [Authorize]
+    //[Authorize]
     [HttpPost]
     public async Task<IActionResult> CreateBooking(Booking booking)
     {
@@ -55,7 +55,8 @@ public class BookingController : Controller
             }
 
 
-            var user = await _userManager.GetUserAsync(User);
+            //var user = await _userManager.GetUserAsync(User);
+            var user = await _itemDbContext.CustomerUsers.FindAsync("5124afd8-451c-49fc-a15a-ab784ece9256");
             string userId = user.Id;
 
             var newBooking = new Booking
