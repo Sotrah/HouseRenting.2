@@ -1,12 +1,17 @@
 ﻿import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import Flatpickr from "react-flatpickr";
+import axios from "axios";
 
 const ItemDisplay = () => {
     const { id } = useParams();
     const [item, setItem] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [formData, setFormData] = useState({
+        bookingDate: "",
+        itemId: ""
+    });
 
     useEffect(() => {
         const fetchItemDetails = async () => {
@@ -68,6 +73,30 @@ const ItemDisplay = () => {
     const hasSecondImage = imageUrl2 && imageUrl2.trim() !== '';
     const hasThirdImage = imageUrl3 && imageUrl3.trim() !== '';
 
+
+    const handleChange = (e) => {
+        const value = e.target.value;
+        setFormData({
+            ...formData,
+            [e.target.name]: value
+        });
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const userData = {
+            bookingDate: formData.bookingDate,
+            itemId: id
+        };
+        axios.post("/booking/createbooking", formData, {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        }).then((response) => {
+            console.log(response.status, response.data.token);
+        });
+    };
+
    
     return (
         <div className="listing-border">
@@ -126,10 +155,11 @@ const ItemDisplay = () => {
                         <div className="border p-4 box">
                             <h3>{price.toFixed(0)} NOK per night</h3>
                             
-                            <form>
+                            <form onSubmit={handleSubmit}>
                                 <div className="form-group text">
                                     <p>
-                                        <input type="text" name="bookingDate" placeholder="Select Date.." id="datePicker" autoComplete="off" required />
+                                        <input type="text" name="bookingDate" value={formData.bookingDate}
+                                            onChange={handleChange} placeholder="Select Date.." id="datePicker" autoComplete="off" required />
                                     </p>
                                 </div>
                                 <div className="form-group">
