@@ -120,7 +120,7 @@ const ItemDisplay = () => {
                 });
                 /*fetchItems(); // Call fetchItems to update the item list*/
                 console.log("Navigating to home");
-                navigate("/");
+                navigate("/bookingtable");
             } else {
                 alert("Failed to create item. Please try again.");
             }
