@@ -16,8 +16,8 @@ public static class DBInit
             var customers = new List<CustomerUser>
             {
                 new CustomerUser { Email = "AliceHansen@test1.test", PasswordHash = "1234"},
-                new CustomerUser { Email = "BobJohansen@test2.test", PasswordHash = "2345"},
                 new CustomerUser { Email = "DemoUser@Airdnd.com", PasswordHash = "2345"},
+                new CustomerUser { Email = "BobJohansen@test2.test", PasswordHash = "2345"},
             };
             context.AddRange(customers);
             context.SaveChanges();
@@ -100,7 +100,7 @@ public static class DBInit
                     Guests = "5",
                     Baths = "2",
                     ImageUrl = "/images/dnd21.png",
-                    UserId = customerUsers[2].Id,
+                    UserId = customerUsers[1].Id,
                     ImageUrl2 = "/images/Image2.2.png",
                     ImageUrl3 = "/images/Image2.3.png"
                 },
@@ -116,7 +116,7 @@ public static class DBInit
                     Guests = "15",
                     Baths = "3",
                     ImageUrl = "/images/dnd22.png",
-                    UserId = customerUsers[2].Id,
+                    UserId = customerUsers[1].Id,
                 },
                 new Item
                 {
@@ -130,7 +130,7 @@ public static class DBInit
                     Guests = "12",
                     Baths = "3",
                     ImageUrl = "/images/dnd28.png",
-                    UserId = customerUsers[2].Id,
+                    UserId = customerUsers[1].Id,
                 },
                 new Item
                 {
@@ -144,7 +144,7 @@ public static class DBInit
                     Guests = "8",
                     Baths = "2",
                     ImageUrl = "/images/dnd29.png",
-                    UserId = customerUsers[2].Id,
+                    UserId = customerUsers[1].Id,
                 },
                 new Item
                 {
@@ -158,7 +158,7 @@ public static class DBInit
                     Guests = "30",
                     Baths = "8",
                     ImageUrl = "/images/dnd32.png",
-                    UserId = customerUsers[2].Id,
+                    UserId = customerUsers[1].Id,
                 },
             };
             context.AddRange(items);
@@ -173,14 +173,14 @@ public static class DBInit
                 new Booking
                 {
                     ItemId = 1,
-                    UserId = customerUsers[2].Id,
-                    BookingDate = new DateTime(2023, 11, 25),  // Example booked date
+                    UserId = customerUsers[1].Id,
+                    BookingDate = new DateTime(2023, 12, 25),  // Example booked date
                 },
                 new Booking
                 {
                     ItemId = 5,
                     UserId = customerUsers[0].Id,
-                    BookingDate = new DateTime(2023, 11, 30)   // Another example booked date
+                    BookingDate = new DateTime(2023, 12, 13)   // Another example booked date
                 },
             };
             context.AddRange(bookings);
