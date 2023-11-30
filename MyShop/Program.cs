@@ -26,6 +26,17 @@ builder.Services.AddDbContext<ItemDbContext>(options =>
 builder.Services.AddDefaultIdentity<CustomerUser>()
     .AddEntityFrameworkStores<ItemDbContext>();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
+
 builder.Services.AddScoped<IItemRepository, ItemRepository>();
 
 builder.Services.AddRazorPages(); // order of adding services does not matter
