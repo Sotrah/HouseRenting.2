@@ -145,41 +145,24 @@ public class ItemController : Controller
             return BadRequest(ModelState);
         }
     }
-    /*
-    [HttpGet]
-    [Authorize] 
-    public async Task<IActionResult> Update(int id)
-    {
-        var item = await _itemRepository.GetItemById(id);
-        if (item == null)
-        {
-            _logger.LogError("[ItemController] Item not found when updating the ItemId {ItemId:0000}", id);
-            return BadRequest("Item not found for the ItemId");
-        }
 
-        var itemUpdateViewModel = new ItemUpdateViewModel
-        {
-            ItemId = item.ItemId,
-            Name = item.Name,
-            Price = item.Price,
-            Description = item.Description,
-            Address = item.Address,
-            Phone = item.Phone,
-            Rooms = item.Rooms,
-            Beds = item.Beds,
-            Guests = item.Guests,
-            Baths = item.Baths,
-        };
-
-        return View(itemUpdateViewModel);
-    }
-    */
-    [HttpPut("{itemId}")]
+    [HttpPut("api/Item/Update/{itemId}")]
     public async Task<IActionResult> Update(int itemId, [FromForm] ItemUpdateViewModel model)
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
+        }
+        string userId;
+        CustomerUser user = await _userManager.GetUserAsync(User);
+
+        if (user != null)
+        {
+            userId = user.Id;
+        }
+        else
+        {
+            userId = Constants.DemoUserId;
         }
 
         var item = await _itemRepository.GetItemById(itemId);
@@ -192,6 +175,7 @@ public class ItemController : Controller
         item.Name = model.Name;
         item.Price = model.Price;
         item.Description = model.Description;
+        item.Address = model.Address;
         item.Phone = model.Phone;
         item.Rooms = model.Rooms;
         item.Beds = model.Beds;
@@ -221,31 +205,33 @@ public class ItemController : Controller
     }
 
 
-            [HttpGet]
-    [Authorize]
+    [HttpDelete("api/Item/{id}")]
     public async Task<IActionResult> Delete(int id)
     {
-        var item = await _itemRepository.GetItemById(id);
-        if (item == null)
         {
-            _logger.LogError("[ItemController] Item not found for the ItemId {ItemId:0000}", id);
-            return BadRequest("Item not found for the ItemId");
+            var item = await _itemRepository.GetItemById(id);
+            if (item == null)
+            {
+                _logger.LogError("[ItemController] Item not found for the ItemId {ItemId:0000}", id);
+                return NotFound($"Item not found for the ItemId {id}");
+            }
+
+            await _itemRepository.Delete(id);
+            return Ok($"Item with Id {id} deleted successfully");
         }
-        return View(item);
+
+        /*[HttpPost]
+     /*   public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            bool returnOk = await _itemRepository.Delete(id);
+            if (!returnOk)
+            {
+                _logger.LogError("[ItemController] Item deletion failed for the ItemId {ItemId:0000}", id);
+                return BadRequest("Item deletion failed");
+            }
+            return RedirectToAction(nameof(Table));
+        }*/
     }
-
-    /*[HttpPost]
- /*   public async Task<IActionResult> DeleteConfirmed(int id)
-    {
-        bool returnOk = await _itemRepository.Delete(id);
-        if (!returnOk)
-        {
-            _logger.LogError("[ItemController] Item deletion failed for the ItemId {ItemId:0000}", id);
-            return BadRequest("Item deletion failed");
-        }
-        return RedirectToAction(nameof(Table));
-    }*/
-
     private async Task<string> UploadImage(IFormFile imageFile)
     {
         if (imageFile == null || imageFile.Length == 0) return null;
@@ -258,4 +244,5 @@ public class ItemController : Controller
 
         return "/images/" + imageFile.FileName;
     }
+
 }

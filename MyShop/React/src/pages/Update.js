@@ -5,61 +5,94 @@ import { useItems } from '../components/ItemContext';
 
 const UpdateListing = () => {
     const [itemFields, setItemFields] = useState({
-        // Initialize the state with all the fields you need
         itemId: '',
-        name: '',
-        price: '',
-        description: '',
-        address: '',
-        phone: '',
-        rooms: '',
-        beds: '',
-        guests: '',
-        baths: '',
+        Name: '',
+        Price: '',
+        Description: '',
+        Address: '',
+        Phone: '',
+        Rooms: '',
+        Beds: '',
+        Guests: '',
+        Baths: '',
+        ImageUrl: '',
+        ImageUrl2: '',
+        ImageUrl3: '',
         ImageUpload: null,
         ImageUpload2: null,
         ImageUpload3: null,
     });
-    const { itemId } = useParams(); // Get the item ID from the URL
+    const { itemId } = useParams();
     const navigate = useNavigate();
-    const { fetchItems } = useItems(); // Use the fetchItems function from context
+    const { fetchItems } = useItems();
 
     useEffect(() => {
-        // Fetch the item details using itemId
-        fetch(`/Item/GetItem/${itemId}`)
-            .then(response => response.json())
-            .then(data => setItemFields(data))
+        axios.get(`/Item/GetItem/${itemId}`)
+            .then(response => response.data) 
+            .then(data => {
+                setItemFields({
+                    itemId: data.itemId,
+                    Name: data.name || '',
+                    Price: data.price ? data.price.toString() : '',
+                    Description: data.description || '',
+                    Address: data.address || '',
+                    Phone: data.phone || '',
+                    Rooms: data.rooms || '',
+                    Beds: data.beds || '',
+                    Guests: data.guests || '',
+                    Baths: data.baths || '',
+                    ImageUrl: data.imageUrl || '',
+                    ImageUrl2: data.imageUrl2 || '',
+                    ImageUrl3: data.imageUrl3 || '',
+                    ImageUpload: null,
+                    ImageUpload2: null,
+                    ImageUpload3: null,
+                });
+            })
             .catch(error => console.error('Unable to get item:', error));
     }, [itemId]);
 
-
     const handleFileChange = (e) => {
         setItemFields({ ...itemFields, [e.target.name]: e.target.files[0] });
+    };
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setItemFields(prevState => ({
+            ...prevState,
+            [name]: value
+        }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
         const formData = new FormData();
-        Object.keys(itemFields).forEach(key => {
-            // Append files and other fields separately
-            if (key === 'ImageUpload' || key === 'ImageUpload2' || key === 'ImageUpload3') {
-                if (itemFields[key] instanceof File) {
-                    formData.append(key, itemFields[key]);
-                }
-            } else {
+        formData.append('itemId', itemFields.itemId);
+        for (const key in itemFields) {
+            if (itemFields[key] !== null && key !== 'itemId' && !key.startsWith('ImageUpload')) {
                 formData.append(key, itemFields[key]);
             }
-        });
+        }
+
+        if (itemFields.ImageUpload) {
+            formData.append('ImageUpload', itemFields.ImageUpload);
+        }
+        if (itemFields.ImageUpload2) {
+            formData.append('ImageUpload2', itemFields.ImageUpload2);
+        }
+        if (itemFields.ImageUpload3) {
+            formData.append('ImageUpload3', itemFields.ImageUpload3);
+        }
 
         try {
-            const response = await axios.put(`/Item/Update/${itemId}`, formData, {
+            const response = await axios.put(`http://localhost:7205/api/Item/Update/${itemId}`, formData, {
                 headers: { 'Content-Type': 'multipart/form-data' },
             });
 
             if (response.status >= 200 && response.status < 300) {
-                fetchItems(); // Update the item list
-                navigate('/'); // Navigate to the home page or listings page
+                fetchItems();
+                navigate('/EditListings/');
             } else {
                 alert('Failed to update item. Please try again.');
             }
@@ -70,7 +103,7 @@ const UpdateListing = () => {
     };
 
     const handleCancel = () => {
-        navigate.push('/EditListings'); // Navigate back to the table view
+        navigate('/EditListings/'); // Navigate back to the table view
     };
 
     return (
@@ -81,57 +114,57 @@ const UpdateListing = () => {
 
                 <div className="form-group">
                     <label>Name</label>
-                    <input type="text" name="name" className="form-control" value={item.name} onChange={handleChange} />
+                    <input type="text" name="Name" className="form-control" value={itemFields.Name} onChange={handleChange} />
                 </div>
 
                 <div className="form-group">
                     <label>Price</label>
-                    <input type="number" name="price" className="form-control" value={item.price} onChange={handleChange} />
+                    <input type="number" name="Price" className="form-control" value={itemFields.Price} onChange={handleChange} />
                 </div>
 
                 <div className="form-group">
                     <label>Description</label>
-                    <textarea name="description" className="form-control" value={item.description} onChange={handleChange} />
+                    <textarea name="Description" className="form-control" value={itemFields.Description} onChange={handleChange} />
                 </div>
 
                 <div className="form-group">
                     <label>Phone</label>
-                    <input type="tel" name="phone" className="form-control" value={item.phone} onChange={handleChange} />
+                    <input type="tel" name="Phone" className="form-control" value={itemFields.Phone} onChange={handleChange} />
                 </div>
 
                 <div className="form-group">
                     <label>Rooms</label>
-                    <input type="number" name="rooms" className="form-control" value={item.rooms} onChange={handleChange} />
+                    <input type="number" name="Rooms" className="form-control" value={itemFields.Rooms} onChange={handleChange} />
                 </div>
 
                 <div className="form-group">
                     <label>Beds</label>
-                    <input type="number" name="beds" className="form-control" value={item.beds} onChange={handleChange} />
+                    <input type="number" name="Beds" className="form-control" value={itemFields.Beds} onChange={handleChange} />
                 </div>
 
                 <div className="form-group">
                     <label>Guests</label>
-                    <input type="number" name="guests" className="form-control" value={item.guests} onChange={handleChange} />
+                    <input type="number" name="Guests" className="form-control" value={itemFields.Guests} onChange={handleChange} />
                 </div>
 
                 <div className="form-group">
                     <label>Baths</label>
-                    <input type="number" name="baths" className="form-control" value={item.baths} onChange={handleChange} />
+                    <input type="number" name="Baths" className="form-control" value={itemFields.Baths} onChange={handleChange} />
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="ImageUpload">Image 1</label>
-                    <input type="file" id="ImageUpload" name="ImageUpload" className="form-control" accept="image/*" />
+                    <input type="file" id="ImageUpload" name="ImageUpload" className="form-control" accept="image/*" onChange={handleFileChange} />
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="ImageUpload2">Image 2</label>
-                    <input type="file" id="ImageUpload2" name="ImageUpload2" className="form-control" accept="image/*" />
+                    <input type="file" id="ImageUpload2" name="ImageUpload2" className="form-control" accept="image/*" onChange={handleFileChange} />
                 </div>
 
                 <div className="form-group">
                     <label htmlFor="ImageUpload3">Image 3</label>
-                    <input type="file" id="ImageUpload3" name="ImageUpload3" className="form-control" accept="image/*" />
+                    <input type="file" id="ImageUpload3" name="ImageUpload3" className="form-control" accept="image/*" onChange={handleFileChange} />
                 </div>
 
                 <button type="submit" className="btn btn-primary mt-3">Save Changes</button>

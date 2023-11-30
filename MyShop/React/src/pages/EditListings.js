@@ -21,7 +21,7 @@ const EditListings = () => {
     const deleteItem = async (itemId) => {
         if (window.confirm('Are you sure you want to delete this item?')) {
             try {
-                const response = await fetch(`/Item/DeleteConfirmed/${itemId}`, { method: 'POST' });
+                const response = await fetch(`/api/Item/${itemId}`, { method: 'DELETE' });
                 if (!response.ok) {
                     throw new Error('Item deletion failed');
                 }
@@ -31,6 +31,7 @@ const EditListings = () => {
             }
         }
     };
+
 
     return (
         <div>
