@@ -8,7 +8,7 @@ public static class DBInit
     {
         using var serviceScope = app.ApplicationServices.CreateScope();
         ItemDbContext context = serviceScope.ServiceProvider.GetRequiredService<ItemDbContext>();
-        //context.Database.EnsureDeleted();
+        context.Database.EnsureDeleted();
         context.Database.EnsureCreated();
 
         if (!context.CustomerUsers.Any())
@@ -16,8 +16,8 @@ public static class DBInit
             var customers = new List<CustomerUser>
             {
                 new CustomerUser { Email = "AliceHansen@test1.test", PasswordHash = "1234"},
-                new CustomerUser { Email = "BobJohansen@test2.test", PasswordHash = "2345"},
                 new CustomerUser { Email = "DemoUser@Airdnd.com", PasswordHash = "2345"},
+                new CustomerUser { Email = "BobJohansen@test2.test", PasswordHash = "2345"},
             };
             context.AddRange(customers);
             context.SaveChanges();
@@ -174,13 +174,13 @@ public static class DBInit
                 {
                     ItemId = 1,
                     UserId = customerUsers[1].Id,
-                    BookingDate = new DateTime(2023, 11, 25),  // Example booked date
+                    BookingDate = new DateTime(2023, 12, 25),  // Example booked date
                 },
                 new Booking
                 {
                     ItemId = 5,
                     UserId = customerUsers[0].Id,
-                    BookingDate = new DateTime(2023, 11, 30)   // Another example booked date
+                    BookingDate = new DateTime(2023, 12, 13)   // Another example booked date
                 },
             };
             context.AddRange(bookings);
