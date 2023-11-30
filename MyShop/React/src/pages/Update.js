@@ -25,6 +25,8 @@ const UpdateListing = () => {
     const { itemId } = useParams();
     const navigate = useNavigate();
     const { fetchItems } = useItems();
+    const [validationErrors, setValidationErrors] = useState({});
+
 
     useEffect(() => {
         axios.get(`/Item/GetItem/${itemId}`)
@@ -55,12 +57,33 @@ const UpdateListing = () => {
     const handleFileChange = (e) => {
         setItemFields({ ...itemFields, [e.target.name]: e.target.files[0] });
     };
+    const validateField = (name, value) => {
+        switch (name) {
+            case 'Name':
+                return /^[0-9a-zA-ZæøåÆØÅ.' \-]{2,20}$/.test(value) ? '' : 'The Name must be numbers or letters and between 2 to 20 characters.';
+            case 'Phone':
+                return /^[0-9]{8,15}$/.test(value) ? '' : 'The Phone number must be between 8 and 15 digits';
+            case 'Rooms':
+            case 'Beds':
+            case 'Guests':
+            case 'Baths':
+                return /^[0-9]{1,2}$/.test(value) && parseInt(value) >= 1 && parseInt(value) <= 50 ? '' : 'Must be a number between 1 and 50';
+            default:
+                return '';
+        }
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setItemFields(prevState => ({
             ...prevState,
             [name]: value
+        }));
+
+        const errorMessage = validateField(name, value);
+        setValidationErrors(prevState => ({
+            ...prevState,
+            [name]: errorMessage
         }));
     };
 
@@ -115,6 +138,7 @@ const UpdateListing = () => {
                 <div className="form-group">
                     <label>Name</label>
                     <input type="text" name="Name" className="form-control" value={itemFields.Name} onChange={handleChange} />
+                    {validationErrors.Name && <div className="text-danger">{validationErrors.Name}</div>}
                 </div>
 
                 <div className="form-group">
@@ -130,26 +154,32 @@ const UpdateListing = () => {
                 <div className="form-group">
                     <label>Phone</label>
                     <input type="tel" name="Phone" className="form-control" value={itemFields.Phone} onChange={handleChange} />
+                    {validationErrors.Phone && <div className="text-danger">{validationErrors.Phone}</div>}
                 </div>
 
                 <div className="form-group">
                     <label>Rooms</label>
                     <input type="number" name="Rooms" className="form-control" value={itemFields.Rooms} onChange={handleChange} />
+                    {validationErrors.Rooms && <div className="text-danger">{validationErrors.Rooms}</div>}
+
                 </div>
 
                 <div className="form-group">
                     <label>Beds</label>
                     <input type="number" name="Beds" className="form-control" value={itemFields.Beds} onChange={handleChange} />
+                    {validationErrors.Beds && <div className="text-danger">{validationErrors.Beds}</div>}
                 </div>
 
                 <div className="form-group">
                     <label>Guests</label>
                     <input type="number" name="Guests" className="form-control" value={itemFields.Guests} onChange={handleChange} />
+                    {validationErrors.Guests && <div className="text-danger">{validationErrors.Guests}</div>}
                 </div>
 
                 <div className="form-group">
                     <label>Baths</label>
                     <input type="number" name="Baths" className="form-control" value={itemFields.Baths} onChange={handleChange} />
+                    {validationErrors.Baths && <div className="text-danger">{validationErrors.Baths}</div>}
                 </div>
 
                 <div className="form-group">

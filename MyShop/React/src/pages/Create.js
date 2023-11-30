@@ -21,11 +21,34 @@ const CreateItem = () => {
 
     const { fetchItems } = useItems(); // Destructure fetchItems from the hook
     const navigate = useNavigate();
+    const [validationErrors, setValidationErrors] = useState({});
 
+    const validateField = (name, value) => {
+        switch (name) {
+            case 'Name':
+                return /^[0-9a-zA-ZæøåÆØÅ.' \-]{2,20}$/.test(value) ? '' : 'The Name must be numbers or letters and between 2 to 20 characters.';
+            case 'Phone':
+                return /^[0-9]{8,15}$/.test(value) ? '' : 'The Phone number must be between 8 and 15 digits';
+            case 'Rooms':
+            case 'Beds':
+            case 'Guests':
+            case 'Baths':
+                return /^[0-9]{1,2}$/.test(value) && parseInt(value) >= 1 && parseInt(value) <= 50 ? '' : 'Must be a number between 1 and 50';
+            default:
+                return '';
+        }
+    };
     const handleInputChange = (event) => {
         const { name, value } = event.target;
         setItemFields({ ...itemFields, [name]: value });
+
+        const errorMessage = validateField(name, value);
+        setValidationErrors(prevState => ({
+            ...prevState,
+            [name]: errorMessage
+        }));
     };
+
 
     const handleFileChange = (event) => {
         setItemFields({ ...itemFields, [event.target.name]: event.target.files[0] });
@@ -90,6 +113,7 @@ return (
             <div className="form-group">
                 <label htmlFor="Name">Name</label>
                 <input type="text" name="Name" value={itemFields.Name} onChange={handleInputChange} />
+                {validationErrors.Name && <div className="text-danger">{validationErrors.Name}</div>}
             </div>
             <div className="form-group">
                 <label htmlFor="Price">Price per night</label>
@@ -102,26 +126,32 @@ return (
             <div className="form-group">
                 <label htmlFor="Address">Address</label>
                 <input type="text" name="Address" value={itemFields.Address} onChange={handleInputChange} />
+                {validationErrors.Address && <div className="text-danger">{validationErrors.Address}</div>}
             </div>
             <div className="form-group">
                 <label htmlFor="Phone">Phone number</label>
                 <input type="number" name="Phone" value={itemFields.Phone} onChange={handleInputChange} />
+                {validationErrors.Phone && <div className="text-danger">{validationErrors.Phone}</div>}
             </div>
             <div className="form-group">
                 <label htmlFor="Rooms">Rooms</label>
                 <input type="number" name="Rooms" value={itemFields.Rooms} onChange={handleInputChange} />
+                {validationErrors.Rooms && <div className="text-danger">{validationErrors.Rooms}</div>}
             </div>
             <div className="form-group">
                 <label htmlFor="Beds">Beds</label>
                 <input type="number" name="Beds" value={itemFields.Beds} onChange={handleInputChange} />
+                {validationErrors.Beds && <div className="text-danger">{validationErrors.Beds}</div>}
             </div>
             <div className="form-group">
                 <label htmlFor="Guests">Guests</label>
                 <input type="number" name="Guests" value={itemFields.Guests} onChange={handleInputChange} />
+                {validationErrors.Guests && <div className="text-danger">{validationErrors.Guests}</div>}
             </div>
             <div className="form-group">
                 <label htmlFor="Baths">Baths</label>
                 <input type="number" name="Baths" value={itemFields.Baths} onChange={handleInputChange} />
+                {validationErrors.Baths && <div className="text-danger">{validationErrors.Baths}</div>}
             </div>
             <div className="form-group">
                 <label htmlFor="ImageUpload">Image 1</label>
