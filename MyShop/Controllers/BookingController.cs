@@ -56,7 +56,7 @@ public class BookingController : Controller
 
 
             //var user = await _userManager.GetUserAsync(User);
-            var user = await _itemDbContext.CustomerUsers.FirstOrDefaultAsync(u => u.Email == "DemoUser@Airdnd.com");
+            var user = await _itemDbContext.CustomerUsers.FirstOrDefaultAsync(u => u.Email == Constants.DemoUserEmail);
             string userId = user.Id;
 
             var newBooking = new Booking

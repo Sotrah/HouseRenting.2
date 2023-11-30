@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyShop.DAL;
 using MyShop.Models;
 using MyShop.ViewModels;
@@ -10,14 +11,16 @@ namespace MyShop.Controllers;
 public class ItemController : Controller
 {
     private readonly IItemRepository _itemRepository;
+    private readonly ItemDbContext _itemDbContext;
     private readonly ILogger<ItemController> _logger;
     private readonly IWebHostEnvironment _hostEnvironment;
     private readonly UserManager<CustomerUser> _userManager;
 
 
-    public ItemController(IItemRepository itemRepository, ILogger<ItemController> logger, IWebHostEnvironment hostEnvironment, UserManager<CustomerUser> userManager)
+    public ItemController(IItemRepository itemRepository, ItemDbContext itemDbContext, ILogger<ItemController> logger, IWebHostEnvironment hostEnvironment, UserManager<CustomerUser> userManager)
     {
         _itemRepository = itemRepository;
+        _itemDbContext = itemDbContext;
         _logger = logger;
         _hostEnvironment = hostEnvironment;
         _userManager = userManager;
@@ -93,16 +96,10 @@ public class ItemController : Controller
         if (ModelState.IsValid)
         {
             string userId;
-            CustomerUser user = await _userManager.GetUserAsync(User);
+            // CustomerUser user = await _userManager.GetUserAsync(User);
+            var user = await _itemDbContext.CustomerUsers.FirstOrDefaultAsync(u => u.Email == Constants.DemoUserEmail);
+            userId = user.Id;
 
-            if (user != null)
-            {
-                userId = user.Id;
-            }
-            else
-            {
-                userId = Constants.DemoUserId;
-            }
             var imageUrl = await UploadImage(model.ImageUpload);
             var imageUrl2 = await UploadImage(model.ImageUpload2);
             var imageUrl3 = await UploadImage(model.ImageUpload3);
@@ -154,16 +151,9 @@ public class ItemController : Controller
             return BadRequest(ModelState);
         }
         string userId;
-        CustomerUser user = await _userManager.GetUserAsync(User);
-
-        if (user != null)
-        {
-            userId = user.Id;
-        }
-        else
-        {
-            userId = Constants.DemoUserId;
-        }
+        // CustomerUser user = await _userManager.GetUserAsync(User);
+        var user = await _itemDbContext.CustomerUsers.FirstOrDefaultAsync(u => u.Email == Constants.DemoUserEmail);
+        userId = user.Id;
 
         var item = await _itemRepository.GetItemById(itemId);
         if (item == null)

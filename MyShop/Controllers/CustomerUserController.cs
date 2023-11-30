@@ -26,7 +26,7 @@ public class CustomerUserController : Controller
     }
     public async Task<ActionResult> GetUser()
     {
-        CustomerUser loggedInUser = await _itemDbContext.CustomerUsers.FirstOrDefaultAsync(u => u.Email == "DemoUser@Airdnd.com");
+        CustomerUser loggedInUser = await _itemDbContext.CustomerUsers.FirstOrDefaultAsync(u => u.Email == Constants.DemoUserEmail);
         return Json(loggedInUser);
     }
 }
